@@ -1,0 +1,11 @@
+Source: hamonikr-pcchecker
+Section: utils
+Priority: optional
+Maintainer: HamoniKR <pkg@hamonikr.org>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 0.0.1
+
+Package: hamonikr-pcchecker
+Architecture: all
+Homepage: https://hamonikr.org
+Description: HamoniKR PC Checker
