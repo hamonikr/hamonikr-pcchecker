@@ -330,11 +330,17 @@ class Application(Gtk.Window):
         ###### backup ######
         total_cnt += 2
         ts_path = "/timeshift/snapshots"
+        backup_ts_status = ""
+        backup_list = ""
+
+
+        print( os.path.isdir(ts_path))
 
         if os.path.isdir(ts_path):
             backup_list = subprocess.check_output("ls " + ts_path, shell=True).decode().strip().split('\n')
+
             if(len(backup_list) == 1 and backup_list[0] == ''):
-                ts_status = "<span background='red' color='white'><b>위  험</b></span>"
+                backup_ts_status = "<span background='red' color='white'><b>위  험</b></span>"
             else:
                 backup_list = sorted(backup_list, reverse=True)
                 bk_date_list = backup_list[0].split('_')[0].split('-')
@@ -347,24 +353,33 @@ class Application(Gtk.Window):
 
                 if 30 > diff_day:
                     cnt += 2
-                    ts_status = "<span background='green' color='white'><b>안  전</b></span>"
-                    ts_info_txt = ""
+                    backup_ts_status = "<span background='green' color='white'><b>안  전</b></span>"
+                    # ts_info_txt = ""
                 elif 60 > diff_day:
                     cnt += 1
-                    ts_status = "<span background='orange' color='white'><b>주  의</b></span>"
-                    ts_info_txt = ""
+                    backup_ts_status = "<span background='orange' color='white'><b>주  의</b></span>"
+                    # ts_info_txt = ""
                 else:
-                    ts_status = "<span background='red' color='white'><b>위  험</b></span>"
-                    ts_info_txt = ""
+                    backup_ts_status = "<span background='red' color='white'><b>위  험</b></span>"
+                    # ts_info_txt = ""
+        else:
+            backup_ts_status = "<span background='red' color='white'><b>위  험</b></span>"
+            # ts_info_txt = ""
+
 
         row = Gtk.ListBoxRow()
         lbl_ts_status = Gtk.Label()
         lbl_ts_name = Gtk.Label()
         lbl_ts_info = Gtk.Label()
 
-        lbl_ts_status.set_markup(ts_status)
+        lbl_ts_status.set_markup(backup_ts_status)
         lbl_ts_name.set_markup("백업")
-        lbl_ts_info.set_markup(str(len(backup_list))+" 개의 백업이 있습니다.\n마지막 백업은 "+bk_date_list[0]+"년"+bk_date_list[1]+"월"+bk_date_list[2]+"일 입니다.")
+        
+        if(len(backup_list) == 1 and backup_list[0] == ''):
+            lbl_ts_info.set_markup(str(len(backup_list))+" 개의 백업이 있습니다.\n마지막 백업은 "+bk_date_list[0]+"년"+bk_date_list[1]+"월"+bk_date_list[2]+"일 입니다.")
+        else:
+            lbl_ts_info.set_markup("시스템 안전을 위해 백업을 진행")
+
 
         box_ts = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         box_ts.pack_start(lbl_ts_status, True, True, 0)
