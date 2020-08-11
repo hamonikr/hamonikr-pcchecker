@@ -192,23 +192,23 @@ class Application(Gtk.Window):
         row.add(box_graphic)
         listbox.add(row)
 
-        # # # uuid info
-        # uuid_val = self.fnt_command_return_word("sudo blkid |head -1| cut -f 2 -d'\"'")
-        #
-        # # uuid gui
-        # total_cnt += 2
-        # lbl_uuid_name = Gtk.Label()
-        # lbl_uuid = Gtk.Label()
-        # box_uuid = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
-        # box_uuid.pack_start(lbl_uuid_name, True, False, 0)
-        # box_uuid.pack_start(lbl_uuid, True, False, 0)
-        #
-        # lbl_uuid_name.set_markup("<span>단말 제품 번호</span>")
-        # lbl_uuid.set_markup("<span>"+uuid_val+"</span>")
-        #
-        # row = Gtk.ListBoxRow()
-        # row.add(box_uuid)
-        # listbox.add(row)
+        # # uuid info
+        uuid_val = self.fnt_command_return_word("sudo blkid | grep UUID", 'UUID="', '"')
+
+        # uuid gui
+        total_cnt += 2
+        lbl_uuid_name = Gtk.Label()
+        lbl_uuid = Gtk.Label()
+        box_uuid = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        box_uuid.pack_start(lbl_uuid_name, True, False, 0)
+        box_uuid.pack_start(lbl_uuid, True, False, 0)
+
+        lbl_uuid_name.set_markup("<span>단말 제품 번호</span>")
+        lbl_uuid.set_markup("<span>"+uuid_val+"</span>")
+
+        row = Gtk.ListBoxRow()
+        row.add(box_uuid)
+        listbox.add(row)
 
         # ###### password ######
         # row = Gtk.ListBoxRow()
