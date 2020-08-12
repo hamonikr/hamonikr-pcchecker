@@ -291,9 +291,9 @@ class Application(Gtk.Window):
         lbl_ufw_info = Gtk.Label()
 
         try:
-            subprocess.run("dpkg --get-selections | grep ufw", shell=True)
+            subprocess.check_call("dpkg --get-selections | grep ufw", shell=True)
         except subprocess.CalledProcessError as e:
-            subprocess.run("sudo apt install ufw")
+            subprocess.call("sudo apt install ufw", shell=True)
         # ufw_check = subprocess.check_output("dpkg --get-selections | grep ufw", shell=True)
         # if ufw_check == 0:
         #     subprocess.run("sudo apt install ufw")
