@@ -293,7 +293,7 @@ class Application(Gtk.Window):
         try:
             subprocess.check_call("dpkg --get-selections | grep ufw", shell=True)
         except subprocess.CalledProcessError as e:
-            subprocess.call("sudo apt install ufw", shell=True)
+            subprocess.call("sudo apt --yes --force-yes install ufw", shell=True)
 
         ufw_val = open('/etc/ufw/ufw.conf', mode='rt', encoding='utf-8').read().split('ENABLED=')[1].split('\n')[0]
         if "yes" == ufw_val :
@@ -431,7 +431,7 @@ class Application(Gtk.Window):
         try:
             subprocess.check_call("dpkg --get-selections | grep gufw", shell=True)
         except subprocess.CalledProcessError as e:
-            subprocess.call("sudo apt install gufw", shell=True)
+            subprocess.call("sudo apt --yes --force-yes install gufw", shell=True)
         subprocess.call('sudo gufw', shell=True)
 
     def fnt_open_timeshift(self, widget):
@@ -440,7 +440,7 @@ class Application(Gtk.Window):
         try:
             subprocess.check_call("dpkg --get-selections | grep timeshift", shell=True)
         except subprocess.CalledProcessError as e:
-            subprocess.call("sudo apt install timeshift", shell=True)
+            subprocess.call("sudo apt --yes --force-yes install timeshift", shell=True)
         subprocess.call('sudo timeshift-gtk', shell=True)
 
     def logger(self, message):
