@@ -294,9 +294,6 @@ class Application(Gtk.Window):
             subprocess.check_call("dpkg --get-selections | grep ufw", shell=True)
         except subprocess.CalledProcessError as e:
             subprocess.call("sudo apt install ufw", shell=True)
-        # ufw_check = subprocess.check_output("dpkg --get-selections | grep ufw", shell=True)
-        # if ufw_check == 0:
-        #     subprocess.run("sudo apt install ufw")
 
         ufw_val = open('/etc/ufw/ufw.conf', mode='rt', encoding='utf-8').read().split('ENABLED=')[1].split('\n')[0]
         if "yes" == ufw_val :
@@ -430,10 +427,20 @@ class Application(Gtk.Window):
 
     def fnt_open_ufw(self, widget):
         self.logger("Open ufw")
+        # 방화벽에 접근하기위한 gufw 패키지가 없을 경우 설치해준다.
+        try:
+            subprocess.check_call("dpkg --get-selections | grep gufw", shell=True)
+        except subprocess.CalledProcessError as e:
+            subprocess.call("sudo apt install gufw", shell=True)
         subprocess.call('sudo gufw', shell=True)
 
     def fnt_open_timeshift(self, widget):
         self.logger("Open timeshft")
+        # 백업에 접근하기위한 gufw 패키지가 없을 경우 설치해준다.
+        try:
+            subprocess.check_call("dpkg --get-selections | grep timeshift", shell=True)
+        except subprocess.CalledProcessError as e:
+            subprocess.call("sudo apt install timeshift", shell=True)
         subprocess.call('sudo timeshift-gtk', shell=True)
 
     def logger(self, message):
