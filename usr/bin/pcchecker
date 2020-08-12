@@ -210,39 +210,39 @@ class Application(Gtk.Window):
         row.add(box_uuid)
         listbox.add(row)
 
-        # ###### password ######
-        # row = Gtk.ListBoxRow()
-        # lbl_pw_status = Gtk.Label()
-        # lbl_pw_name = Gtk.Label()
-        # lbl_pw_info = Gtk.Label()
-        #
-        # pw_date = subprocess.check_output("sudo passwd -S $USER | awk '{print $3}'", shell=True).decode().split('/')
-        # pw_date = int(str(date.today() - date(int(pw_date[2]), int(pw_date[0]), int(pw_date[1]))).split(' day')[0])
-        #
-        # if 30 >= pw_date :
-        #     cnt += 2
-        #     pw_status = "<span background='green' color='white'><b>안  전</b></span>"
-        # elif 90 >= pw_date :
-        #     cnt += 1
-        #     pw_status = "<span background='orange' color='white'><b>주  의</b></span>"
-        # else :
-        #     pw_status = "<span background='red' color='white'><b>위  험</b></span>"
-        #
-        # lbl_pw_status.set_markup(pw_status)
-        # lbl_pw_name.set_markup("비밀번호")
-        # lbl_pw_info.set_markup("비밀번호 변경 후 "+str(pw_date)+" 일 지났습니다.")
-        #
-        # box_pw = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        # box_pw.pack_start(lbl_pw_status, True, True, 0)
-        # box_pw.pack_start(lbl_pw_name, True, True, 0)
-        # box_pw.pack_start(lbl_pw_info, True, True, 0)
-        #
-        # btn_pw = Gtk.Button(label="설정")
-        # btn_pw.connect("clicked", self.fnt_open_user)
-        # box_pw.pack_start(btn_pw, True, True, 0)
-        #
-        # row.add(box_pw)
-        # listbox.add(row)
+        ###### password ######
+        row = Gtk.ListBoxRow()
+        lbl_pw_status = Gtk.Label()
+        lbl_pw_name = Gtk.Label()
+        lbl_pw_info = Gtk.Label()
+
+        pw_date = subprocess.check_output("sudo passwd -S $USER | awk '{print $3}'", shell=True).decode().split('/')
+        pw_date = int(str(date.today() - date(int(pw_date[2]), int(pw_date[0]), int(pw_date[1]))).split(' day')[0])
+
+        if 30 >= pw_date :
+            cnt += 2
+            pw_status = "<span background='green' color='white'><b>안  전</b></span>"
+        elif 90 >= pw_date :
+            cnt += 1
+            pw_status = "<span background='orange' color='white'><b>주  의</b></span>"
+        else :
+            pw_status = "<span background='red' color='white'><b>위  험</b></span>"
+
+        lbl_pw_status.set_markup(pw_status)
+        lbl_pw_name.set_markup("비밀번호")
+        lbl_pw_info.set_markup("비밀번호 변경 후 "+str(pw_date)+" 일 지났습니다.")
+
+        box_pw = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        box_pw.pack_start(lbl_pw_status, True, True, 0)
+        box_pw.pack_start(lbl_pw_name, True, True, 0)
+        box_pw.pack_start(lbl_pw_info, True, True, 0)
+
+        btn_pw = Gtk.Button(label="설정")
+        btn_pw.connect("clicked", self.fnt_open_user)
+        box_pw.pack_start(btn_pw, True, True, 0)
+
+        row.add(box_pw)
+        listbox.add(row)
 
         ###### update ######
         total_cnt += 2
@@ -280,36 +280,40 @@ class Application(Gtk.Window):
         row.add(box_update)
         listbox.add(row)
 
-        # ###### ufw ######
-        # total_cnt += 2
-        # row = Gtk.ListBoxRow()
-        # lbl_ufw_status = Gtk.Label()
-        # lbl_ufw_name = Gtk.Label()
-        # lbl_ufw_info = Gtk.Label()
-        #
-        # ufw_val = open('/etc/ufw/ufw.conf', mode='rt', encoding='utf-8').read().split('ENABLED=')[1].split('\n')[0]
-        # if "yes" == ufw_val :
-        #     cnt += 2
-        #     ufw_status = "<span background='green' color='white'><b>활  성</b></span>"
-        #     lbl_ufw_info.set_markup("방화벽이 활성화 되었습니다")
-        # else :
-        #     ufw_status = "<span background='red' color='white'><b>비활성</b></span>"
-        #     lbl_ufw_info.set_markup("방화벽이 비활성화 되었습니다")
-        #
-        # lbl_ufw_status.set_markup(ufw_status)
-        # lbl_ufw_name.set_markup("방화벽")
-        #
-        # box_ufw = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        # box_ufw.pack_start(lbl_ufw_status, True, True, 0)
-        # box_ufw.pack_start(lbl_ufw_name, True, True, 0)
-        # box_ufw.pack_start(lbl_ufw_info, True, True, 0)
-        #
-        # btn_ufw = Gtk.Button(label="설정")
-        # btn_ufw.connect("clicked", self.fnt_open_ufw)
-        # box_ufw.pack_start(btn_ufw, True, True, 0)
-        #
-        # row.add(box_ufw)
-        # listbox.add(row)
+        ###### ufw ######
+        total_cnt += 2
+        row = Gtk.ListBoxRow()
+        lbl_ufw_status = Gtk.Label()
+        lbl_ufw_name = Gtk.Label()
+        lbl_ufw_info = Gtk.Label()
+
+        ufw_check = subprocess.check_output("dpkg --get-selections | grep ufw", shell=True)
+        if ufw_check == 0:
+            subprocess.run("sudo apt install ufw")
+
+        ufw_val = open('/etc/ufw/ufw.conf', mode='rt', encoding='utf-8').read().split('ENABLED=')[1].split('\n')[0]
+        if "yes" == ufw_val :
+            cnt += 2
+            ufw_status = "<span background='green' color='white'><b>활  성</b></span>"
+            lbl_ufw_info.set_markup("방화벽이 활성화 되었습니다")
+        else :
+            ufw_status = "<span background='red' color='white'><b>비활성</b></span>"
+            lbl_ufw_info.set_markup("방화벽이 비활성화 되었습니다")
+
+        lbl_ufw_status.set_markup(ufw_status)
+        lbl_ufw_name.set_markup("방화벽")
+
+        box_ufw = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        box_ufw.pack_start(lbl_ufw_status, True, True, 0)
+        box_ufw.pack_start(lbl_ufw_name, True, True, 0)
+        box_ufw.pack_start(lbl_ufw_info, True, True, 0)
+
+        btn_ufw = Gtk.Button(label="설정")
+        btn_ufw.connect("clicked", self.fnt_open_ufw)
+        box_ufw.pack_start(btn_ufw, True, True, 0)
+
+        row.add(box_ufw)
+        listbox.add(row)
 
         ###### vaccine ######
 
