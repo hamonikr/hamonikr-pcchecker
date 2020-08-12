@@ -434,7 +434,7 @@ class Application(Gtk.Window):
             subprocess.call('cinnamon-settings user', shell=True)
         else :
             print("하모니카os가 아니다")
-            subprocess.call('gnome-control-center user-accounts', shell=True)
+            subprocess.call('sudo gnome-control-center user-accounts', shell=True)
 
     def fnt_open_updatemanager(self, widget):
         self.logger("Open update manager")
