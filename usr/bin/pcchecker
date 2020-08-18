@@ -431,10 +431,8 @@ class Application(Gtk.Window):
         self.logger("Open user - pw")
         osname=self.fnt_command_return_word("lsb_release -i", 'ID:\t', '\n')
         if osname=="HamoniKR" :
-            print("하모니카os이다")
             subprocess.call('cinnamon-settings user', shell=True)
         else :
-            print("하모니카os가 아니다")
             subprocess.call('XDG_CURRENT_DESKTOP=GNOME gnome-control-center user-accounts', shell=True)
 
     def fnt_open_updatemanager(self, widget):
@@ -444,6 +442,8 @@ class Application(Gtk.Window):
             subprocess.call('mintupdate', shell=True)
         elif osname == "Gooroom":
             subprocess.call('gooroom-update-launcher', shell=True)
+        elif osname == "Tmaxos":
+            subprocess.call('XDG_CURRENT_DESKTOP=GNOME gnome-control-center info-overview', shell=True)
 
     def fnt_open_ufw(self, widget):
         self.logger("Open ufw")
