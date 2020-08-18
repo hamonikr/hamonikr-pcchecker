@@ -226,6 +226,7 @@ class Application(Gtk.Window):
         lbl_pw_info = Gtk.Label()
 
         pw_date = subprocess.check_output("sudo passwd -S $USER | awk '{print $3}'", shell=True).decode().split('/')
+        print(pw_date)
         if date.today()==date(int(pw_date[2]), int(pw_date[0]), int(pw_date[1])):
             pw_date=0
         else:
@@ -434,11 +435,15 @@ class Application(Gtk.Window):
             subprocess.call('cinnamon-settings user', shell=True)
         else :
             print("하모니카os가 아니다")
-            subprocess.call('sudo gnome-control-center user-accounts', shell=True)
+            subprocess.call('XDG_CURRENT_DESKTOP=GNOME gnome-control-center user-accounts', shell=True)
 
     def fnt_open_updatemanager(self, widget):
         self.logger("Open update manager")
-        subprocess.call('mintupdate', shell=True)
+        osname = self.fnt_command_return_word("lsb_release -i", 'ID:\t', '\n')
+        if osname == "HamoniKR":
+            subprocess.call('mintupdate', shell=True)
+        elif osname == "Gooroom":
+            subprocess.call('gooroom-update-launcher', shell=True)
 
     def fnt_open_ufw(self, widget):
         self.logger("Open ufw")
