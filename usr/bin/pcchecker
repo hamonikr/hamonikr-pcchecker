@@ -225,7 +225,7 @@ class Application(Gtk.Window):
         lbl_pw_name = Gtk.Label()
         lbl_pw_info = Gtk.Label()
 
-        pw_date = subprocess.check_output("sudo passwd -S $USER | awk '{print $3}'", shell=True).decode().split('/')
+        pw_date = subprocess.check_output("sudo passwd -S $PCCHECKER_USER | awk '{print $3}'", shell=True).decode().split('/')
         print(pw_date)
         if date.today()==date(int(pw_date[2]), int(pw_date[0]), int(pw_date[1])):
             pw_date=0
@@ -431,7 +431,7 @@ class Application(Gtk.Window):
         self.logger("Open user - pw")
         osname=self.fnt_command_return_word("lsb_release -i", 'ID:\t', '\n')
         if osname=="HamoniKR" :
-            subprocess.call('cinnamon-settings user', shell=True)
+            subprocess.call ('su - $PCCHECKER_USER -c "cinnamon-settings user"', shell=True)
         else :
             subprocess.call('XDG_CURRENT_DESKTOP=GNOME gnome-control-center user-accounts', shell=True)
 
