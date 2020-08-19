@@ -91,23 +91,23 @@ class Application(Gtk.Window):
         row.add(box_os)
         listbox.add(row)
 
+        if os_name == "HamoniKR":
+            # cinnamon info
+            cinnamon_ver = self.fnt_command_return_word("cinnamon --version", 'Cinnamon ', '\n')
 
-        # cinnamon info
-        cinnamon_ver = self.fnt_command_return_word("cinnamon --version", 'Cinnamon ', '\n')
+            # cinnamon gui
+            lbl_cinnamon_name = Gtk.Label()
+            lbl_cinnamon = Gtk.Label()
+            box_cinnamon = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+            box_cinnamon.pack_start(lbl_cinnamon_name, True, False, 0)
+            box_cinnamon.pack_start(lbl_cinnamon, True, False, 0)
 
-        # cinnamon gui
-        lbl_cinnamon_name = Gtk.Label()
-        lbl_cinnamon = Gtk.Label()
-        box_cinnamon = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
-        box_cinnamon.pack_start(lbl_cinnamon_name, True, False, 0)
-        box_cinnamon.pack_start(lbl_cinnamon, True, False, 0)
+            lbl_cinnamon_name.set_markup("<span>시나몬 버전</span>")
+            lbl_cinnamon.set_markup("<span>"+cinnamon_ver+"</span>")
 
-        lbl_cinnamon_name.set_markup("<span>시나몬 버전</span>")
-        lbl_cinnamon.set_markup("<span>"+cinnamon_ver+"</span>")
-
-        row = Gtk.ListBoxRow()
-        row.add(box_cinnamon)
-        listbox.add(row)
+            row = Gtk.ListBoxRow()
+            row.add(box_cinnamon)
+            listbox.add(row)
 
         # kernel info
         kernel_ver = self.fnt_command_return_word("uname -r", False, '\n')
