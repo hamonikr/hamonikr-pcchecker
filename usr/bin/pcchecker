@@ -23,12 +23,29 @@ class Application(Gtk.Window):
         Gtk.Window.__init__(self, title="HamoniKR PC Checker")
         self.set_border_width(10)
 
-        box_outer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
+        box_outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.add(box_outer)
 
-        listbox = Gtk.ListBox()
-        listbox.set_selection_mode(Gtk.SelectionMode.NONE)
-        box_outer.pack_start(listbox, True, True, 0)
+        stacks = Gtk.Stack()
+        stacks.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
+        stacks.set_transition_duration(1000)
+
+        stack_switcher = Gtk.StackSwitcher()
+        stack_switcher.set_stack(stacks)
+        box_outer.pack_start(stack_switcher, True, True, 0)
+        box_outer.pack_start(stacks, True, True, 0)
+
+        stc_security_status = Gtk.ListBox()
+        stc_security_status.set_selection_mode(Gtk.SelectionMode.NONE)
+        stacks.add_titled(stc_security_status, "label", "보안상태정보")
+
+        stc_pc_info = Gtk.ListBox()
+        stc_pc_info.set_selection_mode(Gtk.SelectionMode.NONE)
+        stacks.add_titled(stc_pc_info, "label", "내 pc 정보")
+
+        stc_security_checklist = Gtk.ListBox()
+        stc_security_checklist.set_selection_mode(Gtk.SelectionMode.NONE)
+        stacks.add_titled(stc_security_checklist, "label", "점검항목")
 
         # check count
         total_cnt = 0
@@ -41,7 +58,7 @@ class Application(Gtk.Window):
 
         row = Gtk.ListBoxRow()
         row.add(box_total_status)
-        listbox.add(row)
+        stc_security_status.add(row)
 
         ###### info ######
         lbl_total_info = Gtk.Label()
@@ -50,7 +67,7 @@ class Application(Gtk.Window):
 
         row = Gtk.ListBoxRow()
         row.add(box_total_info)
-        listbox.add(row)
+        stc_security_status.add(row)
 
         ###### score ######
         lbl_total_score = Gtk.Label()
@@ -59,7 +76,7 @@ class Application(Gtk.Window):
 
         row = Gtk.ListBoxRow()
         row.add(box_total_score)
-        listbox.add(row)
+        stc_security_status.add(row)
 
         ###### system infomation ######
         lbl_sys_title = Gtk.Label()
@@ -70,7 +87,7 @@ class Application(Gtk.Window):
 
         row = Gtk.ListBoxRow()
         row.add(box_sys_title)
-        listbox.add(row)
+        stc_pc_info.add(row)
 
         # os info
         os_name = self.fnt_command_return_word("lsb_release -i", 'ID:\t', '\n')
@@ -89,7 +106,7 @@ class Application(Gtk.Window):
 
         row = Gtk.ListBoxRow()
         row.add(box_os)
-        listbox.add(row)
+        stc_pc_info.add(row)
 
         if os_name == "HamoniKR":
             # cinnamon info
@@ -107,7 +124,7 @@ class Application(Gtk.Window):
 
             row = Gtk.ListBoxRow()
             row.add(box_cinnamon)
-            listbox.add(row)
+            stc_pc_info.add(row)
 
         # kernel info
         kernel_ver = self.fnt_command_return_word("uname -r", False, '\n')
@@ -124,7 +141,7 @@ class Application(Gtk.Window):
 
         row = Gtk.ListBoxRow()
         row.add(box_kernel)
-        listbox.add(row)
+        stc_pc_info.add(row)
 
         # CPU info
         cpu_name = self.fnt_command_return_word("lscpu | grep 'Model name:'", 'Model name:', '\n')
@@ -142,7 +159,7 @@ class Application(Gtk.Window):
 
         row = Gtk.ListBoxRow()
         row.add(box_cpu)
-        listbox.add(row)
+        stc_pc_info.add(row)
 
         # memory info
         memory_name = subprocess.check_output("free -h | grep 'Mem:'", shell=True).decode()
@@ -160,7 +177,7 @@ class Application(Gtk.Window):
 
         row = Gtk.ListBoxRow()
         row.add(box_memory)
-        listbox.add(row)
+        stc_pc_info.add(row)
 
         # disk info
         disk_val = self.fnt_command_return_word(
@@ -179,7 +196,7 @@ class Application(Gtk.Window):
 
         row = Gtk.ListBoxRow()
         row.add(box_disk)
-        listbox.add(row)
+        stc_pc_info.add(row)
 
         try:
             subprocess.check_call("dpkg --get-selections | grep pciutils", shell=True)
@@ -200,7 +217,7 @@ class Application(Gtk.Window):
 
         row = Gtk.ListBoxRow()
         row.add(box_graphic)
-        listbox.add(row)
+        stc_pc_info.add(row)
 
         # # uuid info
         uuid_val = self.fnt_command_return_word("sudo blkid | grep UUID", 'UUID="', '"')
@@ -218,7 +235,7 @@ class Application(Gtk.Window):
 
         row = Gtk.ListBoxRow()
         row.add(box_uuid)
-        listbox.add(row)
+        stc_pc_info.add(row)
 
         ###### password ######
         row = Gtk.ListBoxRow()
@@ -235,28 +252,28 @@ class Application(Gtk.Window):
 
         if 30 >= pw_date :
             cnt += 2
-            pw_status = "<span background='green' color='white'><b>안  전</b></span>"
+            pw_status = "<span background='green' color='white'><b>안   전</b></span>"
         elif 90 >= pw_date :
             cnt += 1
-            pw_status = "<span background='orange' color='white'><b>주  의</b></span>"
+            pw_status = "<span background='orange' color='white'><b>주   의</b></span>"
         else :
-            pw_status = "<span background='red' color='white'><b>위  험</b></span>"
+            pw_status = "<span background='red' color='white'><b>위   험</b></span>"
 
         lbl_pw_status.set_markup(pw_status)
         lbl_pw_name.set_markup("비밀번호")
         lbl_pw_info.set_markup("비밀번호 변경 후 "+str(pw_date)+" 일 지났습니다.")
 
         box_pw = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        box_pw.pack_start(lbl_pw_status, True, True, 0)
-        box_pw.pack_start(lbl_pw_name, True, True, 0)
-        box_pw.pack_start(lbl_pw_info, True, True, 0)
+        box_pw.pack_start(lbl_pw_status, False, False, 0)
+        box_pw.pack_start(lbl_pw_name, True, False, 0)
+        box_pw.pack_start(lbl_pw_info, True, False, 0)
 
         btn_pw = Gtk.Button(label="설정")
         btn_pw.connect("clicked", self.fnt_open_user)
-        box_pw.pack_start(btn_pw, True, True, 0)
+        box_pw.pack_start(btn_pw, False, False, 0)
 
         row.add(box_pw)
-        listbox.add(row)
+        stc_security_checklist.add(row)
 
         ###### update ######
         total_cnt += 2
@@ -270,12 +287,12 @@ class Application(Gtk.Window):
         #        update_date = 1
         if 0 == update_list:
             cnt += 2
-            update_status = "<span background='green' color='white'><b>최  신</b></span>"
+            update_status = "<span background='green' color='white'><b>최   신</b></span>"
         #        elif 30 >= update_date :
         #            cnt += 1
         #            update_status = "<span background='orange' color='white'><b>주  의</b></span>"
         else:
-            update_status = "<span background='orange' color='white'><b>주  의</b></span>"
+            update_status = "<span background='orange' color='white'><b>주   의</b></span>"
         #            update_status = "<span background='red' color='white'><b>경  고</b></span>"
 
         lbl_update_status.set_markup(update_status)
@@ -283,16 +300,16 @@ class Application(Gtk.Window):
         lbl_update_info.set_markup("업그레이드 가능한 패키지가 " + str(update_list) + " 개 있습니다.")
 
         box_update = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        box_update.pack_start(lbl_update_status, True, True, 0)
-        box_update.pack_start(lbl_update_name, True, True, 0)
-        box_update.pack_start(lbl_update_info, True, True, 0)
+        box_update.pack_start(lbl_update_status, False, False, 0)
+        box_update.pack_start(lbl_update_name, True, False, 0)
+        box_update.pack_start(lbl_update_info, True, False, 0)
 
         btn_update = Gtk.Button(label="설정")
         btn_update.connect("clicked", self.fnt_open_updatemanager)
-        box_update.pack_start(btn_update, True, True, 0)
+        box_update.pack_start(btn_update, False, False, 0)
 
         row.add(box_update)
-        listbox.add(row)
+        stc_security_checklist.add(row)
 
         ###### ufw ######
         total_cnt += 2
@@ -309,7 +326,7 @@ class Application(Gtk.Window):
         ufw_val = open('/etc/ufw/ufw.conf', mode='rt', encoding='utf-8').read().split('ENABLED=')[1].split('\n')[0]
         if "yes" == ufw_val :
             cnt += 2
-            ufw_status = "<span background='green' color='white'><b>활  성</b></span>"
+            ufw_status = "<span background='green' color='white'><b>활   성</b></span>"
             lbl_ufw_info.set_markup("방화벽이 활성화 되었습니다")
         else :
             ufw_status = "<span background='red' color='white'><b>비활성</b></span>"
@@ -319,16 +336,16 @@ class Application(Gtk.Window):
         lbl_ufw_name.set_markup("방화벽")
 
         box_ufw = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        box_ufw.pack_start(lbl_ufw_status, True, True, 0)
-        box_ufw.pack_start(lbl_ufw_name, True, True, 0)
-        box_ufw.pack_start(lbl_ufw_info, True, True, 0)
+        box_ufw.pack_start(lbl_ufw_status, False, False, 0)
+        box_ufw.pack_start(lbl_ufw_name, True, False, 0)
+        box_ufw.pack_start(lbl_ufw_info, True, False, 0)
 
         btn_ufw = Gtk.Button(label="설정")
         btn_ufw.connect("clicked", self.fnt_open_ufw)
-        box_ufw.pack_start(btn_ufw, True, True, 0)
+        box_ufw.pack_start(btn_ufw, False, False, 0)
 
         row.add(box_ufw)
-        listbox.add(row)
+        stc_security_checklist.add(row)
 
         ###### vaccine ######
 
@@ -344,7 +361,7 @@ class Application(Gtk.Window):
             backup_list = subprocess.check_output("ls " + ts_path, shell=True).decode().strip().split('\n')
 
             if (len(backup_list) == 1 and backup_list[0] == ''):
-                backup_ts_status = "<span background='red' color='white'><b>위  험</b></span>"
+                backup_ts_status = "<span background='red' color='white'><b>위   험</b></span>"
             else:
                 backup_list = sorted(backup_list, reverse=True)
                 bk_date_list = backup_list[0].split('_')[0].split('-')
@@ -357,17 +374,17 @@ class Application(Gtk.Window):
 
                 if 30 > diff_day:
                     cnt += 2
-                    backup_ts_status = "<span background='green' color='white'><b>안  전</b></span>"
+                    backup_ts_status = "<span background='green' color='white'><b>안   전</b></span>"
                     # ts_info_txt = ""
                 elif 60 > diff_day:
                     cnt += 1
-                    backup_ts_status = "<span background='orange' color='white'><b>주  의</b></span>"
+                    backup_ts_status = "<span background='orange' color='white'><b>주   의</b></span>"
                     # ts_info_txt = ""
                 else:
-                    backup_ts_status = "<span background='red' color='white'><b>위  험</b></span>"
+                    backup_ts_status = "<span background='red' color='white'><b>위   험</b></span>"
                     # ts_info_txt = ""
         else:
-            backup_ts_status = "<span background='red' color='white'><b>위  험</b></span>"
+            backup_ts_status = "<span background='red' color='white'><b>위   험</b></span>"
             # ts_info_txt = ""
 
         row = Gtk.ListBoxRow()
@@ -386,16 +403,16 @@ class Application(Gtk.Window):
             lbl_ts_info.set_markup("시스템 안전을 위해 백업을 진행")
 
         box_ts = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        box_ts.pack_start(lbl_ts_status, True, True, 0)
-        box_ts.pack_start(lbl_ts_name, True, True, 0)
-        box_ts.pack_start(lbl_ts_info, True, True, 0)
+        box_ts.pack_start(lbl_ts_status, False, False, 0)
+        box_ts.pack_start(lbl_ts_name, True, False, 0)
+        box_ts.pack_start(lbl_ts_info, True, False, 0)
 
         btn_ts = Gtk.Button(label="설정")
         btn_ts.connect("clicked", self.fnt_open_timeshift)
-        box_ts.pack_start(btn_ts, True, True, 0)
+        box_ts.pack_start(btn_ts, False, False, 0)
 
         row.add(box_ts)
-        listbox.add(row)
+        stc_security_checklist.add(row)
 
         # status n info
         total_score_val = round(cnt / total_cnt * 100)
