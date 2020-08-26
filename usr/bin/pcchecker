@@ -444,8 +444,8 @@ class Application(Gtk.Window):
 
         if (backup_list_len >= 1 and os.listdir(ts_path)):
             lbl_ts_info.set_markup(
-                str(len(backup_list)) + " 개의 백업이 있습니다.\n마지막 백업은 <span color='green'>" + bk_date_list[0] + "년" + bk_date_list[1] + "월" +
-                bk_date_list[2] + "일</span> 입니다.")
+                str(len(backup_list)) + " 개의 백업이 있습니다.\n마지막 백업은 <b>" + bk_date_list[0] + "년" + bk_date_list[1] + "월" +
+                bk_date_list[2] + "일</b> 입니다.")
         else:
             lbl_ts_info.set_markup("시스템 안전을 위해 백업을 진행하십시오.")
 
@@ -454,7 +454,10 @@ class Application(Gtk.Window):
         box_ts.pack_start(lbl_ts_name, False, False, 15)
         box_ts.pack_start(lbl_ts_info, True, True, 0)
 
-        btn_ts = Gtk.Button(label="설정")
+        img_set = Gtk.Image()
+        img_set.set_from_file("../share/icons/icon.png")
+        btn_ts = Gtk.Button()
+        btn_ts.add(img_set)
         btn_ts.connect("clicked", self.fnt_open_timeshift)
         box_ts.pack_start(btn_ts, False, False, 0)
 
