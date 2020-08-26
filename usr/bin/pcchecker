@@ -391,9 +391,6 @@ class Application(Gtk.Window):
         backup_ts_status = ""
         backup_list = ""
 
-        print(os.path.isdir(ts_path))
-        print(os.listdir(ts_path))
-
         if os.path.isdir(ts_path):
             backup_list = subprocess.check_output("ls " + ts_path, shell=True).decode().strip().split('\n')
             backup_list_len=int(len(backup_list))
