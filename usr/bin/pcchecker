@@ -297,7 +297,10 @@ class Application(Gtk.Window):
         box_pw.pack_start(lbl_pw_name, False, False, 15)
         box_pw.pack_start(lbl_pw_info, True, True, 0)
 
-        btn_pw = Gtk.Button(label="설정")
+        btn_pw = Gtk.Button()
+        img_set1 = Gtk.Image()
+        img_set1.set_from_file("../share/icons/icon.png")
+        btn_pw.add(img_set1)
         btn_pw.connect("clicked", self.fnt_open_user)
         box_pw.pack_start(btn_pw, False, False, 0)
 
@@ -334,7 +337,10 @@ class Application(Gtk.Window):
         btn_fupdate.connect("clicked", self.fnt_fupdate)
         box_update.pack_start(btn_fupdate, False, False, 0)
 
-        btn_update = Gtk.Button(label="설정")
+        btn_update = Gtk.Button()
+        img_set2 = Gtk.Image()
+        img_set2.set_from_file("../share/icons/icon.png")
+        btn_update.add(img_set2)
         btn_update.connect("clicked", self.fnt_open_updatemanager)
         box_update.pack_start(btn_update, False, False, 0)
 
@@ -398,7 +404,10 @@ class Application(Gtk.Window):
         switch_ufw.connect("notify::active", self.fnt_ufw_toggled)
         box_ufw.pack_start(switch_ufw, False, False, 0)
 
-        btn_ufw = Gtk.Button(label="설정")
+        btn_ufw = Gtk.Button()
+        img_set3 = Gtk.Image()
+        img_set3.set_from_file("../share/icons/icon.png")
+        btn_ufw.add(img_set3)
         btn_ufw.connect("clicked", self.fnt_open_ufw)
         box_ufw.pack_start(btn_ufw, False, False, 0)
 
@@ -474,10 +483,10 @@ class Application(Gtk.Window):
         box_ts.pack_start(lbl_ts_name, False, False, 15)
         box_ts.pack_start(lbl_ts_info, True, True, 0)
 
-        img_set = Gtk.Image()
-        img_set.set_from_file("../share/icons/icon.png")
         btn_ts = Gtk.Button()
-        btn_ts.add(img_set)
+        img_set4 = Gtk.Image()
+        img_set4.set_from_file("../share/icons/icon.png")
+        btn_ts.add(img_set4)
         btn_ts.connect("clicked", self.fnt_open_timeshift)
         box_ts.pack_start(btn_ts, False, False, 0)
 
