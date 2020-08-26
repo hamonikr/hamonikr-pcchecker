@@ -49,7 +49,7 @@ Other Linux:
 ```
 git clone https://github.com/2020-Invesum-Internship/hamonikr-pcchecker.git
 cd hamonikr-pcchecker
-make install
+sudo make install
 ```
 
 Windows:
@@ -68,7 +68,7 @@ Other Linux:
 ```
 git clone https://github.com/2020-Invesum-Internship/hamonikr-pcchecker.git
 cd hamonikr-pcchecker
-make clean
+sudo make clean
 ```
 
 ## Using HamoniKR PC Checker
