@@ -97,7 +97,7 @@ class Application(Gtk.Window):
         box_os.pack_start(lbl_os_name, False, False, 0)
         box_os.pack_start(lbl_os, True, False, 0)
 
-        lbl_os_name.set_markup("<span><b>운영체제</b></span>")
+        lbl_os_name.set_markup("<span font='13' ><b> 운영체제      </b></span>")
         lbl_os.set_markup("<span>" + os_info + "</span>")
 
         row = Gtk.ListBoxRow()
@@ -115,7 +115,7 @@ class Application(Gtk.Window):
             box_cinnamon.pack_start(lbl_cinnamon_name, False, False, 0)
             box_cinnamon.pack_start(lbl_cinnamon, True, False, 0)
 
-            lbl_cinnamon_name.set_markup("<span><b>시나몬 버전</b></span>")
+            lbl_cinnamon_name.set_markup("<span font='13'><b> 시나몬 버전   </b></span>")
             lbl_cinnamon.set_markup("<span>"+cinnamon_ver+"</span>")
 
             row = Gtk.ListBoxRow()
@@ -132,7 +132,7 @@ class Application(Gtk.Window):
         box_kernel.pack_start(lbl_kernel_name, False, False, 0)
         box_kernel.pack_start(lbl_kernel, True, False, 0)
 
-        lbl_kernel_name.set_markup("<span><b>리눅스 커널</b></span>")
+        lbl_kernel_name.set_markup("<span font='13'><b> 리눅스 커널   </b></span>")
         lbl_kernel.set_markup("<span>" + kernel_ver + "</span>")
 
         row = Gtk.ListBoxRow()
@@ -150,7 +150,7 @@ class Application(Gtk.Window):
         box_cpu.pack_start(lbl_cpu_name, False, False, 0)
         box_cpu.pack_start(lbl_cpu, True, False, 0)
 
-        lbl_cpu_name.set_markup("<span><b>프로세서</b></span>")
+        lbl_cpu_name.set_markup("<span font='13'><b> 프로세서      </b></span>")
         lbl_cpu.set_markup("<span>" + cpu_name + " X " + cpu_cnt + "</span>")
 
         row = Gtk.ListBoxRow()
@@ -168,7 +168,7 @@ class Application(Gtk.Window):
         box_memory.pack_start(lbl_memory_name, False, False, 0)
         box_memory.pack_start(lbl_memory, True, False, 0)
 
-        lbl_memory_name.set_markup("<span><b>메모리</b></span>")
+        lbl_memory_name.set_markup("<span font='13'><b> 메모리        </b></span>")
         lbl_memory.set_markup("<span>" + memory_name + "</span>")
 
         row = Gtk.ListBoxRow()
@@ -187,7 +187,7 @@ class Application(Gtk.Window):
         box_disk.pack_start(lbl_disk_name, False, False, 0)
         box_disk.pack_start(lbl_disk, True, False, 0)
 
-        lbl_disk_name.set_markup("<span><b>하드 드라이브</b></span>")
+        lbl_disk_name.set_markup("<span font='13'><b> 하드 드라이브 </b></span>")
         lbl_disk.set_markup("<span>" + disk_val + " GB</span>")
 
         row = Gtk.ListBoxRow()
@@ -215,7 +215,7 @@ class Application(Gtk.Window):
         box_graphic.pack_start(lbl_graphic_name, False, False, 0)
         box_graphic.pack_start(lbl_graphic, True, False, 0)
 
-        lbl_graphic_name.set_markup("<span><b>그래픽카드</b></span>")
+        lbl_graphic_name.set_markup("<span font='13'><b> 그래픽카드    </b></span>")
         lbl_graphic.set_markup("<span>" + graphic_val + "</span>")
 
         row = Gtk.ListBoxRow()
@@ -233,7 +233,7 @@ class Application(Gtk.Window):
         box_uuid.pack_start(lbl_uuid_name, False, False, 0)
         box_uuid.pack_start(lbl_uuid, True, False, 0)
 
-        lbl_uuid_name.set_markup("<span><b>단말 제품 번호</b></span>")
+        lbl_uuid_name.set_markup("<span font='13'><b> 단말 제품 번호</b></span>")
         lbl_uuid.set_markup("<span>"+uuid_val+"</span>")
 
         row = Gtk.ListBoxRow()
@@ -454,17 +454,17 @@ class Application(Gtk.Window):
         if 100 == total_score_val:
             lbl_total_score_text = "<span color='green' font='40'><b>" + str(
                 total_score_val) + "</b></span><span><b>/100</b></span>"
-            lbl_total_status_text = "<span color='green' font='100'><b>안전</b></span>"
+            lbl_total_status_text = "<span color='green' font='80'><b>안전</b></span>"
             lbl_total_info_text = "<span>시스템이 안전합니다.</span>"
         elif 70 < total_score_val:
             lbl_total_score_text = "<span color='orange' font='40'><b>" + str(
                 total_score_val) + "</b></span><span><b>/100</b></span>"
-            lbl_total_status_text = "<span color='orange' font='100'><b>주의</b></span>"
+            lbl_total_status_text = "<span color='orange' font='80'><b>주의</b></span>"
             lbl_total_info_text = "<span>시스템 관리에 주의가 필요합니다.</span>"
         else:
             lbl_total_score_text = "<span color='red' font='40'><b>" + str(
                 total_score_val) + "</b></span><span><b>/100</b></span>"
-            lbl_total_status_text = "<span color='red' font='100'><b>위험</b></span>"
+            lbl_total_status_text = "<span color='red' font='80'><b>위험</b></span>"
             lbl_total_info_text = "<span>시스템을 관리해 주시기 바랍니다.</span>"
 
         lbl_total_info.set_markup(lbl_total_info_text)
@@ -520,7 +520,7 @@ class Application(Gtk.Window):
         f.close()
 
     def run(self):
-        self.set_default_size(600,300)
+        self.set_default_size(600,250)
         self.connect("destroy", Gtk.main_quit)
         self.show_all()
         Gtk.main()
