@@ -349,15 +349,27 @@ class Application(Gtk.Window):
             subprocess.call("sudo apt-get --yes --force-yes install gufw", shell=True)
             print("gufw 미설치 -> 설치")
 
-        ufw_val = open('/etc/ufw/ufw.conf', mode='rt', encoding='utf-8').read().split('ENABLED=')[1].split('\n')[0]
-        if "yes" == ufw_val :
+        #ufw_val = open('/etc/ufw/ufw.conf', mode='rt', encoding='utf-8').read().split('ENABLED=')[1].split('\n')[0]
+        # if "yes" == ufw_val :
+        #     cnt += 2
+        #     ufw_status = "<span background='green' font='15' color='white'><b> 활   성 </b></span>"
+        #     lbl_ufw_info.set_markup("방화벽이 <span color='green'><b>활성화</b></span> 되었습니다.")
+        # else :
+        #     ufw_status = "<span background='red' font='15' color='white'><b> 비활성 </b></span>"
+        #     lbl_ufw_info.set_markup("방화벽이 <span color='red'><b>비활성화</b></span> 되었습니다.")
+
+        ufw_val = subprocess.check_output("sudo ufw status | awk '{print $2}'", shell=True).decode().strip()
+        print(ufw_val)
+        if ufw_val=="비활성" or ufw_val=="inactive" :
+            ufw_status = "<span background='red' font='15' color='white'><b> 비활성 </b></span>"
+            lbl_ufw_info.set_markup("방화벽이 <span color='red'><b>비활성화</b></span> 되었습니다.")
+        elif ufw_val=="활성" or ufw_val=="active" :
             cnt += 2
             ufw_status = "<span background='green' font='15' color='white'><b> 활   성 </b></span>"
             lbl_ufw_info.set_markup("방화벽이 <span color='green'><b>활성화</b></span> 되었습니다.")
         else :
-            ufw_status = "<span background='red' font='15' color='white'><b> 비활성 </b></span>"
-            lbl_ufw_info.set_markup("방화벽이 <span color='red'><b>비활성화</b></span> 되었습니다.")
-
+            ufw_status = "<span background='orange' font='15' color='white'><b> 오   류 </b></span>"
+            lbl_ufw_info.set_markup("방화벽 상태를 확인 할 수 없습니다.")
         lbl_ufw_status.set_markup(ufw_status)
         lbl_ufw_name.set_markup("<b>방화벽    </b>")
 
