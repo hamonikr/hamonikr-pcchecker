@@ -105,7 +105,7 @@ key](https://allcontributors.org/docs/en/emoji-key).
 
 ## Contact
 
-연락이 필요한 경우 <root@hamonikr.org> 로 내용을 보내주세요.
+연락이 필요한 경우 <ryuish541@gmail.com> 또는 <yejisoft@gmail.com> 로 내용을 보내주세요.
 
 ## License
 
