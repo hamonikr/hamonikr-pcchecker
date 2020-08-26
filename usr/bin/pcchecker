@@ -6,9 +6,15 @@ import time
 import os
 
 try:
-    subprocess.check_call("dpkg --get-selections | grep gir1.2-appindicator3-0.1", shell=True)
+    gir_install = subprocess.check_output("dpkg --get-selections | grep gir1.2-appindicator3-0.1 | awk '{print $2}'", shell=True).decode().strip()
+    if gir_install != 'install':
+        subprocess.call("sudo apt-get --yes --force-yes install gir1.2-appindicator3-0.1", shell=True)
+        print("gir1.2-appindicator3-0.1 미설치 -> 설치")
+    else:
+        print("gir1.2-appindicator3-0.1 이미 설치됨")
 except subprocess.CalledProcessError as e:
-    subprocess.call("sudo apt --yes --force-yes install gir1.2-appindicator3-0.1", shell=True)
+    subprocess.call("sudo apt-get --yes --force-yes install gir1.2-appindicator3-0.1", shell=True)
+    print("gir1.2-appindicator3-0.1 미설치 -> 설치")
 
 gi.require_version('Gtk', '3.0')
 gi.require_version('AppIndicator3', '0.1')
@@ -189,9 +195,16 @@ class Application(Gtk.Window):
         stc_pc_info.add(row)
 
         try:
-            subprocess.check_call("dpkg --get-selections | grep pciutils", shell=True)
+            pci_install = subprocess.check_output("dpkg --get-selections | grep pciutils | awk '{print $2}'", shell=True).decode().strip()
+            if pci_install != 'install' :
+                subprocess.call("sudo apt-get --yes --force-yes install pciutils", shell=True)
+                print("pciutils 미설치 -> 설치")
+            else :
+                print("pciutils 이미 설치됨")
         except subprocess.CalledProcessError as e:
-            subprocess.call("sudo apt --yes --force-yes install pciutils", shell=True)
+           subprocess.call("sudo apt-get --yes --force-yes install pciutils", shell=True)
+           print("pciutils 미설치 -> 설치")
+
         # graphic info
         graphic_val = self.fnt_command_return_word("lspci | grep -i VGA", 'controller: ', '\n')
 
@@ -314,9 +327,27 @@ class Application(Gtk.Window):
         lbl_ufw_info = Gtk.Label()
 
         try:
-            subprocess.check_call("dpkg --get-selections | grep ufw", shell=True)
+            ufw_install = subprocess.check_output("dpkg --get-selections | grep ^ufw | awk '{print $2}'", shell=True).decode().strip()
+            if ufw_install != 'install':
+                subprocess.call("sudo apt-get --yes --force-yes install ufw", shell=True)
+                print("ufw 미설치 -> 설치")
+            else :
+                print("ufw 이미 설치됨")
         except subprocess.CalledProcessError as e:
-            subprocess.call("sudo apt --yes --force-yes install ufw", shell=True)
+            subprocess.call("sudo apt-get --yes --force-yes install ufw", shell=True)
+            print("ufw 미설치 -> 설치")
+
+        # 방화벽에 접근하기위한 gufw 패키지가 없을 경우 설치해준다.
+        try:
+            gufw_install = subprocess.check_output("dpkg --get-selections | grep gufw | awk '{print $2}'", shell=True).decode().strip()
+            if gufw_install != 'install':
+                subprocess.call("sudo apt-get --yes --force-yes install gufw", shell=True)
+                print("gufw 미설치 -> 설치")
+            else :
+                print("gufw 이미 설치됨")
+        except subprocess.CalledProcessError as e:
+            subprocess.call("sudo apt-get --yes --force-yes install gufw", shell=True)
+            print("gufw 미설치 -> 설치")
 
         ufw_val = open('/etc/ufw/ufw.conf', mode='rt', encoding='utf-8').read().split('ENABLED=')[1].split('\n')[0]
         if "yes" == ufw_val :
@@ -342,9 +373,19 @@ class Application(Gtk.Window):
         row.add(box_ufw)
         stc_security_checklist.add(row)
 
-        ###### vaccine ######
-
         ###### backup ######
+        # 백업에 접근하기위한 timeshift 패키지가 없을 경우 설치해준다.
+        try:
+            ts_install = subprocess.check_output("dpkg --get-selections | grep timeshift | awk '{print $2}'", shell=True).decode().strip()
+            if ts_install != 'install':
+                subprocess.call("sudo apt-get --yes --force-yes install timeshift", shell=True)
+                print("timeshift 미설치 -> 설치")
+            else:
+                print("timeshift 이미 설치됨")
+        except subprocess.CalledProcessError as e:
+            subprocess.call("sudo apt-get --yes --force-yes install timeshift", shell=True)
+            print("timeshift 미설치 -> 설치")
+
         total_cnt += 2
         ts_path = "/timeshift/snapshots"
         backup_ts_status = ""
@@ -462,20 +503,10 @@ class Application(Gtk.Window):
 
     def fnt_open_ufw(self, widget):
         self.logger("Open ufw")
-        # 방화벽에 접근하기위한 gufw 패키지가 없을 경우 설치해준다.
-        try:
-            subprocess.check_call("dpkg --get-selections | grep gufw", shell=True)
-        except subprocess.CalledProcessError as e:
-            subprocess.call("sudo apt --yes --force-yes install gufw", shell=True)
         subprocess.call('sudo gufw', shell=True)
 
     def fnt_open_timeshift(self, widget):
         self.logger("Open timeshft")
-        # 백업에 접근하기위한 gufw 패키지가 없을 경우 설치해준다.
-        try:
-            subprocess.check_call("dpkg --get-selections | grep timeshift", shell=True)
-        except subprocess.CalledProcessError as e:
-            subprocess.call("sudo apt --yes --force-yes install timeshift", shell=True)
         subprocess.call('sudo timeshift-gtk', shell=True)
 
     def logger(self, message):
