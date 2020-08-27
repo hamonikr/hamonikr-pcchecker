@@ -566,7 +566,7 @@ class Application(Gtk.Window):
 
     def fnt_fupdate(self, widget):
         self.logger("System upgrade")
-        subprocess.call('sudo apt-get --yes --force-yes update && sudo apt-get --yes --force-yes upgrade', shell=True)
+        subprocess.call('sudo apt-get --yes update && sudo apt-get --yes upgrade', shell=True)
         if 5 >= int(str(self.update_list)):
             self.cnt += 2
             update_status = "<span background='green' font='15' color='white'><b> 최   신 </b></span>"
