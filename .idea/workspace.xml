@@ -20,10 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0927e9aa-105d-4517-8996-c880311c6e83" name="Default Changelist" comment="설정 버튼 이미지 추가(ing)">
-      <change afterPath="$PROJECT_DIR$/usr/share/icons/hicolor/256x256/apps/icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usr/bin/pcchecker" beforeDir="false" afterPath="$PROJECT_DIR$/usr/bin/pcchecker" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usr/share/icons/icon.png" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.build.swp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/release/hamonikr-pcchecker-1.0.0hamonikr_all.deb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/debian/DEBIAN/md5sums" beforeDir="false" afterPath="$PROJECT_DIR$/debian/DEBIAN/md5sums" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/debian/usr/bin/pcchecker" beforeDir="false" afterPath="$PROJECT_DIR$/debian/usr/bin/pcchecker" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,10 +160,10 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2902" y="333" width="734" height="636" key="#Inspections/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1597993323848" />
-    <state x="2622" y="352" width="517" height="385" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1598507673717">
+    <state x="2622" y="352" width="565" height="385" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1598513690032">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="2622" y="352" width="517" height="385" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1598507673717" />
+    <state x="2622" y="352" width="565" height="385" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1598513690032" />
     <state x="2663" y="286" width="426" height="508" key="FileChooserDialogImpl" timestamp="1598423953365">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
