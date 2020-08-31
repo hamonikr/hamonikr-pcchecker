@@ -27,7 +27,8 @@ class Application(Gtk.Window):
     lbl_ufw_status = Gtk.Label()
     cnt = 0
     total_cnt = 0
-    update_list = subprocess.check_output("apt list --upgradable | wc -l", shell=True).decode().strip()
+    # update_list = subprocess.check_output("apt list --upgradable | wc -l", shell=True).decode().strip()
+    update_list = "5"
     lbl_update_status = Gtk.Label()
     lbl_update_info = Gtk.Label()
     lbl_total_status = Gtk.Label()
@@ -568,6 +569,7 @@ class Application(Gtk.Window):
     def fnt_fupdate(self, widget):
         self.logger("System upgrade")
         subprocess.call('sudo apt-get --yes update && sudo apt-get --yes upgrade', shell=True)
+        self.update_list = subprocess.check_output("apt list --upgradable | wc -l", shell=True).decode().strip()
         if 5 >= int(str(self.update_list)):
             self.cnt += 2
             update_status = "<span background='green' font='15' color='white'><b> 최   신 </b></span>"
