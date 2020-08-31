@@ -125,6 +125,7 @@ class Application(Gtk.Window):
         row.add(box_os)
         stc_pc_info.add(row)
 
+        # TODO : 다른 DE 사용자도 도움이 되는 정보제공으로 변경 필요.
         if os_name == "HamoniKR":
             # cinnamon info
             cinnamon_ver = self.fnt_command_return_word("cinnamon --version", 'Cinnamon ', '\n')

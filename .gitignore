@@ -4,3 +4,5 @@ debian/files
 debian/hamonikr-pcchecker.substvars
 debian/hamonikr-pcchecker/
 
+.idea/
+.build.swp
