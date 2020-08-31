@@ -27,8 +27,7 @@ class Application(Gtk.Window):
     lbl_ufw_status = Gtk.Label()
     cnt = 0
     total_cnt = 0
-    # update_list = subprocess.check_output("apt list --upgradable | wc -l", shell=True).decode().strip()
-    update_list = "5"
+    update_list = subprocess.check_output("apt list --upgradable | wc -l", shell=True).decode().strip()
     lbl_update_status = Gtk.Label()
     lbl_update_info = Gtk.Label()
     lbl_total_status = Gtk.Label()
