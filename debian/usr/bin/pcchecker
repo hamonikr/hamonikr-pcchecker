@@ -24,6 +24,7 @@ from datetime import date, time, datetime
 
 class Application(Gtk.Window):
     lbl_ufw_info = Gtk.Label()
+    lbl_alarm_info = Gtk.Label()
     lbl_ufw_status = Gtk.Label()
     cnt = 0
     total_cnt = 0
@@ -64,6 +65,11 @@ class Application(Gtk.Window):
         stc_security_checklist = Gtk.ListBox()
         stc_security_checklist.set_selection_mode(Gtk.SelectionMode.NONE)
         stacks.add_titled(stc_security_checklist, "label", "점검 항목")
+
+        stc_setting = Gtk.ListBox()
+        stc_setting.set_selection_mode(Gtk.SelectionMode.NONE)
+        stacks.add_titled(stc_setting, "label", "설정")
+
 
         # check count
         self.total_cnt = 0
@@ -523,6 +529,30 @@ class Application(Gtk.Window):
         lbl_total_score.set_markup(lbl_total_score_text)
         lbl_total_status.set_markup(lbl_total_status_text)
 
+        ######설정######
+        ##알람 기능##
+        lbl_alarm = Gtk.Label()
+        lbl_alarm.set_markup("<span font='13'><b> 알람 기능 </b></span>")
+        switch_alarm = Gtk.Switch()
+
+        try:
+            subprocess.check_output("crontab -l | grep alarm.py", shell=True, stderr=subprocess.STDOUT).decode().strip()
+            self.lbl_ufw_info.set_markup("알람이 <span color='green'><b>켜져</b></span> 있습니다.")
+            switch_alarm.set_active(1)
+        except subprocess.CalledProcessError as e:
+            self.lbl_alarm_info.set_markup("알람이 <span color='red'><b>꺼져</b></span> 있습니다.")
+            switch_alarm.set_active(0)
+        switch_alarm.connect("notify::active", self.fnt_alarm_toggled)
+
+        box_alarm = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        box_alarm.pack_start(lbl_alarm, False, False, 0)
+        box_alarm.pack_start(self.lbl_alarm_info, True, False, 0)
+        box_alarm.pack_start(switch_alarm, True, True, 0)
+
+        row = Gtk.ListBoxRow()
+        row.add(box_alarm)
+        stc_setting.add(row)
+
 
     def fnt_refresh(self, widget):
         self.__init__()
@@ -605,6 +635,15 @@ class Application(Gtk.Window):
             self.ufw_status = "<span background='red' font='15' color='white'><b> 비활성 </b></span>"
             self.lbl_ufw_info.set_markup("방화벽이 <span color='red'><b>비활성화</b></span> 되었습니다.")
             self.lbl_ufw_status.set_markup(self.ufw_status)
+
+    def fnt_alarm_toggled(self, alarm_switch, state):
+        self.logger("Switch alarm")
+        if alarm_switch.get_active():
+            #subprocess.call("sudo ufw enable", shell=True)
+            self.lbl_ufw_info.set_markup("알람이 <span color='green'><b>켜져</b></span> 있습니다.")
+        else:
+            #subprocess.call("sudo ufw disable", shell=True)
+            self.lbl_alarm_info.set_markup("알람이 <span color='red'><b>꺼져</b></span> 있습니다.")
 
     def fnt_open_timeshift(self, widget):
         self.logger("Open timeshft")
