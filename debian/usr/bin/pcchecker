@@ -1,0 +1,629 @@
+#!/usr/bin/python3
+import getpass
+import gi
+import subprocess
+import time
+import os
+
+try:
+    gir_install = subprocess.check_output("dpkg --get-selections | grep gir1.2-appindicator3-0.1 | awk '{print $2}'", shell=True).decode().strip()
+    if gir_install != 'install':
+        subprocess.call("sudo apt-get --yes --force-yes install gir1.2-appindicator3-0.1", shell=True)
+        print("gir1.2-appindicator3-0.1 미설치 -> 설치")
+    else:
+        print("gir1.2-appindicator3-0.1 이미 설치됨")
+except subprocess.CalledProcessError as e:
+    subprocess.call("sudo apt-get --yes --force-yes install gir1.2-appindicator3-0.1", shell=True)
+    print("gir1.2-appindicator3-0.1 미설치 -> 설치")
+
+gi.require_version('Gtk', '3.0')
+gi.require_version('AppIndicator3', '0.1')
+from gi.repository import Gtk
+from datetime import date, time, datetime
+
+
+class Application(Gtk.Window):
+    lbl_ufw_info = Gtk.Label()
+    lbl_ufw_status = Gtk.Label()
+    cnt = 0
+    total_cnt = 0
+    update_list = subprocess.check_output("apt list --upgradable | wc -l", shell=True).decode().strip()
+    lbl_update_status = Gtk.Label()
+    lbl_update_info = Gtk.Label()
+    lbl_total_status = Gtk.Label()
+    lbl_total_info = Gtk.Label()
+    lbl_total_score = Gtk.Label()
+
+    def __init__(self):
+        self.logger("HamoniKR PC Checker Start")
+
+        Gtk.Window.__init__(self, title="HamoniKR PC Checker")
+        self.set_border_width(10)
+        box_outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        self.add(box_outer)
+
+        stacks = Gtk.Stack()
+        stacks.set_hexpand(True)
+        stacks.set_vexpand(True)
+        stacks.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
+        stacks.set_transition_duration(1000)
+
+        stack_switcher = Gtk.StackSwitcher()
+        stack_switcher.set_stack(stacks)
+        box_outer.pack_start(stack_switcher, True, True, 0)
+        box_outer.pack_start(stacks, True, True, 0)
+
+        stc_security_status = Gtk.ListBox()
+        stc_security_status.set_selection_mode(Gtk.SelectionMode.NONE)
+        stacks.add_titled(stc_security_status, "label", "보안 상태")
+
+        stc_pc_info = Gtk.ListBox()
+        stc_pc_info.set_selection_mode(Gtk.SelectionMode.NONE)
+        stacks.add_titled(stc_pc_info, "label", "시스템 정보")
+
+        stc_security_checklist = Gtk.ListBox()
+        stc_security_checklist.set_selection_mode(Gtk.SelectionMode.NONE)
+        stacks.add_titled(stc_security_checklist, "label", "점검 항목")
+
+        # check count
+        self.total_cnt = 0
+        self.cnt = 0
+
+        ###### status ######
+        lbl_total_status = self.lbl_total_status
+        box_total_status = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        box_total_status.pack_start(lbl_total_status, True, False, 0)
+
+        row = Gtk.ListBoxRow()
+        row.add(box_total_status)
+        stc_security_status.add(row)
+
+        ###### info ######
+        lbl_total_info = self.lbl_total_info
+        box_total_info = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        box_total_info.pack_start(lbl_total_info, True, False, 0)
+
+        row = Gtk.ListBoxRow()
+        row.add(box_total_info)
+        stc_security_status.add(row)
+
+        ###### score ######
+        lbl_total_score = self.lbl_total_score
+        box_total_score = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        box_total_score.pack_start(lbl_total_score, True, False, 0)
+
+        row = Gtk.ListBoxRow()
+        row.add(box_total_score)
+        stc_security_status.add(row)
+
+        ###### refresh ######
+        btn_refresh = Gtk.Button(label="다시 검사하기")
+        box_refresh = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        btn_refresh.connect("clicked", self.fnt_refresh)
+        box_refresh.pack_start(btn_refresh, True, False, 0)
+
+        row = Gtk.ListBoxRow()
+        row.add(box_refresh)
+        stc_security_status.add(row)
+
+        # os info
+        os_name = self.fnt_command_return_word("lsb_release -i", 'ID:\t', '\n')
+        os_ver = self.fnt_command_return_word("lsb_release -r", 'Release:\t', '\n')
+        os_info = os_name + " " + os_ver
+
+        # os gui
+        lbl_os_name = Gtk.Label()
+        lbl_os = Gtk.Label()
+        box_os = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        box_os.pack_start(lbl_os_name, False, False, 0)
+        box_os.pack_start(lbl_os, True, False, 0)
+
+        lbl_os_name.set_markup("<span font='13' ><b> 운영체제      </b></span>")
+        lbl_os.set_markup("<span>" + os_info + "</span>")
+
+        row = Gtk.ListBoxRow()
+        row.add(box_os)
+        stc_pc_info.add(row)
+
+        # TODO : 다른 DE 사용자도 도움이 되는 정보제공으로 변경 필요.
+        if os_name == "HamoniKR":
+            # cinnamon info
+            cinnamon_ver = self.fnt_command_return_word("cinnamon --version", 'Cinnamon ', '\n')
+
+            # cinnamon gui
+            lbl_cinnamon_name = Gtk.Label()
+            lbl_cinnamon = Gtk.Label()
+            box_cinnamon = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+            box_cinnamon.pack_start(lbl_cinnamon_name, False, False, 0)
+            box_cinnamon.pack_start(lbl_cinnamon, True, False, 0)
+
+            lbl_cinnamon_name.set_markup("<span font='13'><b> 시나몬 버전   </b></span>")
+            lbl_cinnamon.set_markup("<span>"+cinnamon_ver+"</span>")
+
+            row = Gtk.ListBoxRow()
+            row.add(box_cinnamon)
+            stc_pc_info.add(row)
+
+        # kernel info
+        kernel_ver = self.fnt_command_return_word("uname -r", False, '\n')
+
+        # kernel gui
+        lbl_kernel_name = Gtk.Label()
+        lbl_kernel = Gtk.Label()
+        box_kernel = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        box_kernel.pack_start(lbl_kernel_name, False, False, 0)
+        box_kernel.pack_start(lbl_kernel, True, False, 0)
+
+        lbl_kernel_name.set_markup("<span font='13'><b> 리눅스 커널   </b></span>")
+        lbl_kernel.set_markup("<span>" + kernel_ver + "</span>")
+
+        row = Gtk.ListBoxRow()
+        row.add(box_kernel)
+        stc_pc_info.add(row)
+
+        # CPU info
+        cpu_name = self.fnt_command_return_word("lscpu | grep 'Model name:'", 'Model name:', '\n')
+        cpu_cnt = subprocess.check_output("nproc", shell=True).decode().strip()
+
+        # cpu gui
+        lbl_cpu_name = Gtk.Label()
+        lbl_cpu = Gtk.Label()
+        box_cpu = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        box_cpu.pack_start(lbl_cpu_name, False, False, 0)
+        box_cpu.pack_start(lbl_cpu, True, False, 0)
+
+        lbl_cpu_name.set_markup("<span font='13'><b> 프로세서      </b></span>")
+        lbl_cpu.set_markup("<span>" + cpu_name + " X " + cpu_cnt + "</span>")
+
+        row = Gtk.ListBoxRow()
+        row.add(box_cpu)
+        stc_pc_info.add(row)
+
+        # memory info
+        memory_name = subprocess.check_output("free -h | grep 'Mem:'", shell=True).decode()
+        memory_name = memory_name.split('Mem:')[1].strip().split(' ')[0]
+
+        # memory gui
+        lbl_memory_name = Gtk.Label()
+        lbl_memory = Gtk.Label()
+        box_memory = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        box_memory.pack_start(lbl_memory_name, False, False, 0)
+        box_memory.pack_start(lbl_memory, True, False, 0)
+
+        lbl_memory_name.set_markup("<span font='13'><b> 메모리        </b></span>")
+        lbl_memory.set_markup("<span>" + memory_name + "</span>")
+
+        row = Gtk.ListBoxRow()
+        row.add(box_memory)
+        stc_pc_info.add(row)
+
+        # disk info
+        disk_val = self.fnt_command_return_word(
+            "df -P | grep -v ^Filesystem | awk '{sum += $2} END { print sum/1024/1024 }'", False, '\n')
+        disk_val = str(round(float(disk_val), 1))
+
+        # disk gui
+        lbl_disk_name = Gtk.Label()
+        lbl_disk = Gtk.Label()
+        box_disk = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        box_disk.pack_start(lbl_disk_name, False, False, 0)
+        box_disk.pack_start(lbl_disk, True, False, 0)
+
+        lbl_disk_name.set_markup("<span font='13'><b> 하드 드라이브 </b></span>")
+        lbl_disk.set_markup("<span>" + disk_val + " GB</span>")
+
+        row = Gtk.ListBoxRow()
+        row.add(box_disk)
+        stc_pc_info.add(row)
+
+        try:
+            pci_install = subprocess.check_output("dpkg --get-selections | grep pciutils | awk '{print $2}'", shell=True).decode().strip()
+            if pci_install != 'install' :
+                subprocess.call("sudo apt-get --yes --force-yes install pciutils", shell=True)
+                print("pciutils 미설치 -> 설치")
+            else :
+                print("pciutils 이미 설치됨")
+        except subprocess.CalledProcessError as e:
+           subprocess.call("sudo apt-get --yes --force-yes install pciutils", shell=True)
+           print("pciutils 미설치 -> 설치")
+
+        # graphic info
+        graphic_val = self.fnt_command_return_word("lspci | grep -i VGA", 'controller: ', '\n')
+
+        # graphic gui
+        lbl_graphic_name = Gtk.Label()
+        lbl_graphic = Gtk.Label()
+        box_graphic = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        box_graphic.pack_start(lbl_graphic_name, False, False, 0)
+        box_graphic.pack_start(lbl_graphic, True, False, 0)
+
+        lbl_graphic_name.set_markup("<span font='13'><b> 그래픽카드    </b></span>")
+        lbl_graphic.set_markup("<span>" + graphic_val + "</span>")
+
+        row = Gtk.ListBoxRow()
+        row.add(box_graphic)
+        stc_pc_info.add(row)
+
+        # # uuid info
+        uuid_val = self.fnt_command_return_word("sudo blkid | grep UUID", 'UUID="', '"')
+
+        # uuid gui
+        self.total_cnt += 2
+        lbl_uuid_name = Gtk.Label()
+        lbl_uuid = Gtk.Label()
+        box_uuid = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        box_uuid.pack_start(lbl_uuid_name, False, False, 0)
+        box_uuid.pack_start(lbl_uuid, True, False, 0)
+
+        lbl_uuid_name.set_markup("<span font='13'><b> 단말 제품 번호</b></span>")
+        lbl_uuid.set_markup("<span>"+uuid_val+"</span>")
+
+        row = Gtk.ListBoxRow()
+        row.add(box_uuid)
+        stc_pc_info.add(row)
+
+        ###### password ######
+        row = Gtk.ListBoxRow()
+        lbl_pw_status = Gtk.Label()
+        lbl_pw_name = Gtk.Label()
+        lbl_pw_info = Gtk.Label()
+
+        pw_date = subprocess.check_output("sudo passwd -S $PCCHECKER_USER | awk '{print $3}'", shell=True).decode().split('/')
+        print(pw_date)
+        if date.today()==date(int(pw_date[2]), int(pw_date[0]), int(pw_date[1])):
+            pw_date=0
+        else:
+            pw_date = int(str(date.today() - date(int(pw_date[2]), int(pw_date[0]), int(pw_date[1]))).split(' day')[0])
+
+        if 30 >= pw_date :
+            self.cnt += 2
+            pw_status = "<span background='green' font='15' color='white'><b> 안   전 </b></span>"
+            pw_past = "비밀번호 변경 후 <span color='green'><b> "+str(pw_date)+"</b></span> 일 지났습니다."
+        elif 90 >= pw_date :
+            self.cnt += 1
+            pw_status = "<span background='orange' font='15' color='white'><b> 주   의 </b></span>"
+            pw_past = "비밀번호 변경 후 <span color='orange'><b> " + str(pw_date) + "</b></span> 일 지났습니다."
+        else :
+            pw_status = "<span background='red' font='15' color='white'><b> 위   험 </b></span>"
+            pw_past = "비밀번호 변경 후 <span color='red'><b> " + str(pw_date) + "</b></span> 일 지났습니다."
+
+        lbl_pw_status.set_markup(pw_status)
+        lbl_pw_name.set_markup("<b>비밀번호  </b>")
+        lbl_pw_info.set_markup(pw_past)
+
+        box_pw = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        box_pw.pack_start(lbl_pw_status, False, False, 0)
+        box_pw.pack_start(lbl_pw_name, False, False, 15)
+        box_pw.pack_start(lbl_pw_info, True, True, 0)
+
+        btn_pw = Gtk.Button()
+        img_set1 = Gtk.Image()
+        img_set1.set_from_file("/usr/share/icons/hicolor/256x256/apps/icon.png")
+        btn_pw.add(img_set1)
+        btn_pw.connect("clicked", self.fnt_open_user)
+        box_pw.pack_start(btn_pw, False, False, 0)
+
+        row.add(box_pw)
+        stc_security_checklist.add(row)
+
+        ###### update ######
+        self.total_cnt += 2
+        row = Gtk.ListBoxRow()
+        lbl_update_status = self.lbl_update_status
+        lbl_update_name = Gtk.Label()
+        lbl_update_info = self.lbl_update_info
+
+        update_list = self.update_list
+
+        if 5 >= int(str(update_list)):
+            self.cnt += 2
+            update_status = "<span background='green' font='15' color='white'><b> 최   신 </b></span>"
+            update_info = "업그레이드 가능한 패키지가 <span color='green'><b>" + str(update_list) + "</b></span> 개 있습니다."
+        else:
+            update_status = "<span background='orange' font='15' color='white'><b> 주   의 </b></span>"
+            update_info = "업그레이드 가능한 패키지가 <span color='orange'><b>" + str(update_list) + "</b></span> 개 있습니다."
+
+        lbl_update_status.set_markup(update_status)
+        lbl_update_name.set_markup("<b>업그레이드</b>")
+        lbl_update_info.set_markup(update_info)
+
+        box_update = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        box_update.pack_start(lbl_update_status, False, False, 0)
+        box_update.pack_start(lbl_update_name, False, False, 15)
+        box_update.pack_start(lbl_update_info, True, True, 0)
+
+        btn_fupdate = Gtk.Button(label="업그레이드")
+        btn_fupdate.connect("clicked", self.fnt_fupdate)
+        box_update.pack_start(btn_fupdate, False, False, 0)
+
+        btn_update = Gtk.Button()
+        img_set2 = Gtk.Image()
+        img_set2.set_from_file("/usr/share/icons/hicolor/256x256/apps/icon.png")
+        btn_update.add(img_set2)
+        btn_update.connect("clicked", self.fnt_open_updatemanager)
+        box_update.pack_start(btn_update, False, False, 0)
+
+        row.add(box_update)
+        stc_security_checklist.add(row)
+
+        ###### ufw ######
+        self.total_cnt += 2
+        row = Gtk.ListBoxRow()
+        lbl_ufw_status = self.lbl_ufw_status
+        lbl_ufw_name = Gtk.Label()
+        lbl_ufw_info = self.lbl_ufw_info
+        switch_ufw = Gtk.Switch()
+
+        try:
+            ufw_install = subprocess.check_output("dpkg --get-selections | grep ^ufw | awk '{print $2}'", shell=True).decode().strip()
+            if ufw_install != 'install':
+                subprocess.call("sudo apt-get --yes --force-yes install ufw", shell=True)
+                print("ufw 미설치 -> 설치")
+            else :
+                print("ufw 이미 설치됨")
+        except subprocess.CalledProcessError as e:
+            subprocess.call("sudo apt-get --yes --force-yes install ufw", shell=True)
+            print("ufw 미설치 -> 설치")
+
+        # 방화벽에 접근하기위한 gufw 패키지가 없을 경우 설치해준다.
+        try:
+            gufw_install = subprocess.check_output("dpkg --get-selections | grep gufw | awk '{print $2}'", shell=True).decode().strip()
+            if gufw_install != 'install':
+                subprocess.call("sudo apt-get --yes --force-yes install gufw", shell=True)
+                print("gufw 미설치 -> 설치")
+            else :
+                print("gufw 이미 설치됨")
+        except subprocess.CalledProcessError as e:
+            subprocess.call("sudo apt-get --yes --force-yes install gufw", shell=True)
+            print("gufw 미설치 -> 설치")
+
+        ufw_val = subprocess.check_output("sudo ufw status | awk '{print $2}' | head -1", shell=True).decode().strip()
+        print(ufw_val)
+        if ufw_val=="비활성" or ufw_val=="inactive" :
+            ufw_status = "<span background='red' font='15' color='white'><b> 비활성 </b></span>"
+            lbl_ufw_info.set_markup("방화벽이 <span color='red'><b>비활성화</b></span> 되었습니다.")
+            switch_ufw.set_active(0)
+        elif ufw_val=="활성" or ufw_val=="active" :
+            self.cnt += 2
+            ufw_status = "<span background='green' font='15' color='white'><b> 활   성 </b></span>"
+            lbl_ufw_info.set_markup("방화벽이 <span color='green'><b>활성화</b></span> 되었습니다.")
+            switch_ufw.set_active(1)
+        else :
+            ufw_status = "<span background='orange' font='15' color='white'><b> 오   류 </b></span>"
+            lbl_ufw_info.set_markup("방화벽 상태를 확인 할 수 없습니다.")
+            switch_ufw.set_active(0)
+        lbl_ufw_status.set_markup(ufw_status)
+        lbl_ufw_name.set_markup("<b>방화벽    </b>")
+
+        box_ufw = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        box_ufw.pack_start(lbl_ufw_status, False, False, 0)
+        box_ufw.pack_start(lbl_ufw_name, False, False, 15)
+        box_ufw.pack_start(lbl_ufw_info, True, True, 0)
+
+        switch_ufw.connect("notify::active", self.fnt_ufw_toggled)
+        box_ufw.pack_start(switch_ufw, False, False, 0)
+
+        btn_ufw = Gtk.Button()
+        img_set3 = Gtk.Image()
+        img_set3.set_from_file("/usr/share/icons/hicolor/256x256/apps/icon.png")
+        btn_ufw.add(img_set3)
+        btn_ufw.connect("clicked", self.fnt_open_ufw)
+        box_ufw.pack_start(btn_ufw, False, False, 0)
+
+        row.add(box_ufw)
+        stc_security_checklist.add(row)
+
+        ###### backup ######
+        # 백업에 접근하기위한 timeshift 패키지가 없을 경우 설치해준다.
+        try:
+            ts_install = subprocess.check_output("dpkg --get-selections | grep timeshift | awk '{print $2}'", shell=True).decode().strip()
+            if ts_install != 'install':
+                subprocess.call("sudo apt-get --yes --force-yes install timeshift", shell=True)
+                print("timeshift 미설치 -> 설치")
+            else:
+                print("timeshift 이미 설치됨")
+        except subprocess.CalledProcessError as e:
+            subprocess.call("sudo apt-get --yes --force-yes install timeshift", shell=True)
+            print("timeshift 미설치 -> 설치")
+
+        self.total_cnt += 2
+        ts_path = "/timeshift/snapshots"
+        backup_ts_status = ""
+        backup_list = ""
+
+        if os.path.isdir(ts_path):
+            backup_list = subprocess.check_output("ls " + ts_path, shell=True).decode().strip().split('\n')
+            backup_list_len=int(len(backup_list))
+            if (backup_list_len == 1 and os.listdir(ts_path)==[]):
+                backup_ts_status = "<span background='red' font='15' color='white'><b> 위   험 </b></span>"
+                backup_list_len=0
+            else:
+                backup_list = sorted(backup_list, reverse=True)
+                bk_date_list = backup_list[0].split('_')[0].split('-')
+                bk_date = date(int(bk_date_list[0]), int(bk_date_list[1]), int(bk_date_list[2]))
+                diff_day = str(date.today() - bk_date)
+                if "0:00:00" == diff_day:
+                    diff_day = 0
+                else:
+                    diff_day = int(str(date.today() - bk_date).split(' day')[0])
+
+                if 30 > diff_day:
+                    self.cnt += 2
+                    backup_ts_status = "<span background='green' font='15' color='white'><b> 안   전 </b></span>"
+                    # ts_info_txt = ""
+                elif 60 > diff_day:
+                    self.cnt += 1
+                    backup_ts_status = "<span background='orange' font='15' color='white'><b> 주   의 </b></span>"
+                    # ts_info_txt = ""
+                else:
+                    backup_ts_status = "<span background='red' font='15' color='white'><b> 위   험 </b></span>"
+                    # ts_info_txt = ""
+        else:
+            backup_ts_status = "<span background='red' font='15' color='white'><b> 위   험 </b></span>"
+            backup_list_len = 0
+            # ts_info_txt = ""
+
+        row = Gtk.ListBoxRow()
+        lbl_ts_status = Gtk.Label()
+        lbl_ts_name = Gtk.Label()
+        lbl_ts_info = Gtk.Label()
+        lbl_ts_status.set_markup(backup_ts_status)
+        lbl_ts_name.set_markup("<b>백업      </b>")
+
+        if (backup_list_len >= 1 and os.listdir(ts_path)):
+            lbl_ts_info.set_markup(
+                str(len(backup_list)) + " 개의 백업이 있습니다.\n마지막 백업은 <b>" + bk_date_list[0] + "년" + bk_date_list[1] + "월" +
+                bk_date_list[2] + "일</b> 입니다.")
+        else:
+            lbl_ts_info.set_markup("시스템 안전을 위해 백업을 진행하십시오.")
+
+        box_ts = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        box_ts.pack_start(lbl_ts_status, False, False, 0)
+        box_ts.pack_start(lbl_ts_name, False, False, 15)
+        box_ts.pack_start(lbl_ts_info, True, True, 0)
+
+        btn_ts = Gtk.Button()
+        img_set4 = Gtk.Image()
+        img_set4.set_from_file("/usr/share/icons/hicolor/256x256/apps/icon.png")
+        btn_ts.add(img_set4)
+        btn_ts.connect("clicked", self.fnt_open_timeshift)
+        box_ts.pack_start(btn_ts, False, False, 0)
+
+        row.add(box_ts)
+        stc_security_checklist.add(row)
+
+        # status n info
+        total_score_val = round(self.cnt / self.total_cnt * 100)
+        if 100 == total_score_val:
+            lbl_total_score_text = "<span color='green' font='40'><b>" + str(
+                total_score_val) + "</b></span><span><b>/100</b></span>"
+            lbl_total_status_text = "<span color='green' font='80'><b>안전</b></span>"
+            lbl_total_info_text = "<span>시스템이 안전합니다.</span>"
+        elif 70 < total_score_val:
+            lbl_total_score_text = "<span color='orange' font='40'><b>" + str(
+                total_score_val) + "</b></span><span><b>/100</b></span>"
+            lbl_total_status_text = "<span color='orange' font='80'><b>주의</b></span>"
+            lbl_total_info_text = "<span>시스템 관리에 주의가 필요합니다.</span>"
+        else:
+            lbl_total_score_text = "<span color='red' font='40'><b>" + str(
+                total_score_val) + "</b></span><span><b>/100</b></span>"
+            lbl_total_status_text = "<span color='red' font='80'><b>위험</b></span>"
+            lbl_total_info_text = "<span>시스템을 관리해 주시기 바랍니다.</span>"
+
+        lbl_total_info.set_markup(lbl_total_info_text)
+        lbl_total_score.set_markup(lbl_total_score_text)
+        lbl_total_status.set_markup(lbl_total_status_text)
+
+
+    def fnt_refresh(self, widget):
+        self.__init__()
+        total_score_val = round(self.cnt / self.total_cnt * 100)
+        if 100 == total_score_val:
+            lbl_total_score_text = "<span color='green' font='40'><b>" + str(
+                total_score_val) + "</b></span><span><b>/100</b></span>"
+            lbl_total_status_text = "<span color='green' font='80'><b>안전</b></span>"
+            lbl_total_info_text = "<span>시스템이 안전합니다.</span>"
+        elif 70 < total_score_val:
+            lbl_total_score_text = "<span color='orange' font='40'><b>" + str(
+                total_score_val) + "</b></span><span><b>/100</b></span>"
+            lbl_total_status_text = "<span color='orange' font='80'><b>주의</b></span>"
+            lbl_total_info_text = "<span>시스템 관리에 주의가 필요합니다.</span>"
+        else:
+            lbl_total_score_text = "<span color='red' font='40'><b>" + str(
+                total_score_val) + "</b></span><span><b>/100</b></span>"
+            lbl_total_status_text = "<span color='red' font='80'><b>위험</b></span>"
+            lbl_total_info_text = "<span>시스템을 관리해 주시기 바랍니다.</span>"
+
+        self.lbl_total_info.set_markup(lbl_total_info_text)
+        self.lbl_total_score.set_markup(lbl_total_score_text)
+        self.lbl_total_status.set_markup(lbl_total_status_text)
+
+    def fnt_command_return_word(self, command, split1, split2):
+        if False == split1:
+            result = subprocess.check_output(command, shell=True).decode().split(split2)[0]
+        elif False == split2:
+            result = subprocess.check_output(command, shell=True).decode().split(split1)[1]
+        else:
+            result = subprocess.check_output(command, shell=True).decode().split(split1)[1].split(split2)[0]
+        return result.strip()
+
+    def fnt_open_user(self, widget):
+        self.logger("Open user - pw")
+        osname=self.fnt_command_return_word("lsb_release -i", 'ID:\t', '\n')
+        if osname=="HamoniKR" :
+            subprocess.call ('su - $PCCHECKER_USER -c "cinnamon-settings user"', shell=True)
+        else :
+            subprocess.call('XDG_CURRENT_DESKTOP=GNOME gnome-control-center user-accounts', shell=True)
+
+    def fnt_open_updatemanager(self, widget):
+        self.logger("Open update manager")
+        osname = self.fnt_command_return_word("lsb_release -i", 'ID:\t', '\n')
+        if osname == "HamoniKR":
+            subprocess.call('mintupdate', shell=True)
+        elif osname == "Gooroom":
+            subprocess.call('gooroom-update-launcher', shell=True)
+        elif osname == "Tmaxos":
+            subprocess.call('XDG_CURRENT_DESKTOP=GNOME gnome-control-center info-overview', shell=True)
+
+    def fnt_fupdate(self, widget):
+        self.logger("System upgrade")
+        subprocess.call('sudo apt-get --yes update && sudo apt-get --yes upgrade', shell=True)
+        self.update_list = subprocess.check_output("apt list --upgradable | wc -l", shell=True).decode().strip()
+        if 5 >= int(str(self.update_list)):
+            self.cnt += 2
+            update_status = "<span background='green' font='15' color='white'><b> 최   신 </b></span>"
+            update_info = "업그레이드 가능한 패키지가 <span color='green'><b>" + str(self.update_list) + "</b></span> 개 있습니다."
+        else:
+            update_status = "<span background='orange' font='15' color='white'><b> 주   의 </b></span>"
+            update_info = "업그레이드 가능한 패키지가 <span color='orange'><b>" + str(self.update_list) + "</b></span> 개 있습니다."
+        self.lbl_update_status.set_markup(update_status)
+        self.lbl_update_info.set_markup(update_info)
+
+    def fnt_open_ufw(self, widget):
+        self.logger("Open ufw")
+        subprocess.call('sudo gufw', shell=True)
+
+    def fnt_ufw_toggled(self, ufw_switch, state):
+        self.logger("Switch ufw")
+        if ufw_switch.get_active():
+            subprocess.call("sudo ufw enable", shell=True)
+            self.cnt += 2
+            self.ufw_status = "<span background='green' font='15' color='white'><b> 활   성 </b></span>"
+            self.lbl_ufw_info.set_markup("방화벽이 <span color='green'><b>활성화</b></span> 되었습니다.")
+            self.lbl_ufw_status.set_markup(self.ufw_status)
+        else:
+            subprocess.call("sudo ufw disable", shell=True)
+            self.ufw_status = "<span background='red' font='15' color='white'><b> 비활성 </b></span>"
+            self.lbl_ufw_info.set_markup("방화벽이 <span color='red'><b>비활성화</b></span> 되었습니다.")
+            self.lbl_ufw_status.set_markup(self.ufw_status)
+
+    def fnt_open_timeshift(self, widget):
+        self.logger("Open timeshft")
+        subprocess.call('sudo timeshift-gtk', shell=True)
+
+    def logger(self, message):
+        today = date.today().strftime('%Y%m%d')
+        time = datetime.now().strftime('%H:%M:%S')
+        dir_path = "/var/log/pcchecker"
+        file_name = "logger-" + today + ".log"
+
+        if not os.path.isdir(dir_path):
+            os.makedirs(dir_path)
+
+        f = open(dir_path + "/" + file_name, mode='at', encoding='utf-8')
+        f.write("[" + time + "] " + message + "\n")
+        f.close()
+
+    def run(self):
+        self.set_default_size(600,250)
+        self.connect("destroy", Gtk.main_quit)
+        self.show_all()
+        Gtk.main()
+
+
+if 'root' != getpass.getuser():
+    subprocess.call(
+        'zenity --error --no-wrap --height=150 --width=250 --title "실행권한 오류" --text="관리자 권한으로 실행해 주시기 바랍니다."',
+        shell=True)
+else:
+    Application().run()

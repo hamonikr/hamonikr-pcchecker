@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0927e9aa-105d-4517-8996-c880311c6e83" name="Default Changelist" comment="설정 버튼 이미지 추가(ing)">
+      <change beforePath="$PROJECT_DIR$/debian/DEBIAN/md5sums" beforeDir="false" afterPath="$PROJECT_DIR$/debian/DEBIAN/md5sums" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/debian/usr/bin/pcchecker" beforeDir="false" afterPath="$PROJECT_DIR$/debian/usr/bin/pcchecker" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1gOia1h0AJOaiqZfwlC2ZqolOEU" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0927e9aa-105d-4517-8996-c880311c6e83" name="Default Changelist" comment="" />
+      <created>1597992100772</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1597992100772</updated>
+    </task>
+    <task id="LOCAL-00001" summary="MODIFY UI&#10;stack 형태로 ui 가시성 개선 v.1">
+      <created>1598005894656</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1598005894656</updated>
+    </task>
+    <task id="LOCAL-00002" summary="MODIFY UI, backup error&#10;아이콘 수정, 백업 오류 수정, 화면 비율 변경">
+      <created>1598347934149</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1598347934149</updated>
+    </task>
+    <task id="LOCAL-00003" summary="MODIFY error&#10;메인 repo 이슈 #6 timeshift 스냅샷이 없는 PC 에서 오류 해결">
+      <created>1598423296406</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1598423296406</updated>
+    </task>
+    <task id="LOCAL-00004" summary="MODIFY error(test.2)&#10;메인 repo 이슈 #6 timeshift 스냅샷이 없는 PC 에서 오류 해결&#10;ver.2">
+      <created>1598425081578</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1598425081578</updated>
+    </task>
+    <task id="LOCAL-00005" summary="MODIFY ui&#10;폰트 사이즈 조절">
+      <created>1598426273094</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1598426273094</updated>
+    </task>
+    <task id="LOCAL-00006" summary="PR #1 적용&#10;오픈소스 프로젝트에 맞게 README 변경&#10;(PR #1을 local에서 검토, 수정 후 병합하여 pull 하였습니다)">
+      <created>1598428163398</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1598428163398</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Issue #2 방화벽 체크 상태 오류&#10;파일 참조-&gt; subprocess(cmd 확인)으로 방화벽 상태 표기에 시간이 걸려 오류표기 않도록 변경">
+      <created>1598431482190</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1598431482190</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Modify ui">
+      <created>1598431779299</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1598431779299</updated>
+    </task>
+    <task id="LOCAL-00009" summary="설정 버튼 이미지 추가(ing)">
+      <created>1598436979765</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1598436979765</updated>
+    </task>
+    <task id="LOCAL-00010" summary="설정 버튼 이미지 추가(ing)">
+      <created>1598437868123</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1598437868123</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="MODIFY UI&#10;stack 형태로 ui 가시성 개선 v.1" />
+    <MESSAGE value="MODIFY UI, backup error&#10;아이콘 수정, 백업 오류 수정, 화면 비율 변경" />
+    <MESSAGE value="MODIFY error&#10;메인 repo 이슈 #6 timeshift 스냅샷이 없는 PC 에서 오류 해결" />
+    <MESSAGE value="MODIFY error(test.2)&#10;메인 repo 이슈 #6 timeshift 스냅샷이 없는 PC 에서 오류 해결&#10;ver.2" />
+    <MESSAGE value="MODIFY ui&#10;폰트 사이즈 조절" />
+    <MESSAGE value="PR #1 적용&#10;오픈소스 프로젝트에 맞게 README 변경&#10;(PR #1을 local에서 검토, 수정 후 병합하여 pull 하였습니다)" />
+    <MESSAGE value="Issue #2 방화벽 체크 상태 오류&#10;파일 참조-&gt; subprocess(cmd 확인)으로 방화벽 상태 표기에 시간이 걸려 오류표기 않도록 변경" />
+    <MESSAGE value="Modify ui" />
+    <MESSAGE value="설정 버튼 이미지 추가(ing)" />
+    <option name="LAST_COMMIT_MESSAGE" value="설정 버튼 이미지 추가(ing)" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2902" y="333" width="734" height="636" key="#Inspections" timestamp="1597993323848">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2902" y="333" width="734" height="636" key="#Inspections/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1597993323848" />
+    <state x="2622" y="352" width="565" height="385" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1598513690032">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2622" y="352" width="565" height="385" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1598513690032" />
+    <state x="2663" y="286" width="426" height="508" key="FileChooserDialogImpl" timestamp="1598423953365">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2663" y="286" width="426" height="508" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1598423953365" />
+    <state x="2384" y="175" key="SettingsEditor" timestamp="1598424010685">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2384" y="175" key="SettingsEditor/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1598424010685" />
+    <state x="2698" y="273" width="802" height="527" key="Vcs.Push.Dialog.v2" timestamp="1598425102916">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2698" y="273" width="802" height="527" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1598425102916" />
+    <state x="2766" y="183" width="672" height="678" key="search.everywhere.popup" timestamp="1598335583879">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2766" y="183" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1598335583879" />
+  </component>
+</project>
