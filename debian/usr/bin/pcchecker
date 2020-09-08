@@ -530,6 +530,18 @@ class Application(Gtk.Window):
         lbl_total_status.set_markup(lbl_total_status_text)
 
         ######설정######
+        ## python-daemon 패키지 다운로드
+        try:
+            pci_install = subprocess.check_output("dpkg --get-selections | grep python-daemon | awk '{print $2}'", shell=True).decode().strip()
+            if pci_install != 'install' :
+                subprocess.call("sudo apt-get --yes --force-yes install python-daemon", shell=True)
+                print("daemon 미설치 -> 설치")
+            else :
+                print("daemon 이미 설치됨")
+        except subprocess.CalledProcessError as e:
+           subprocess.call("sudo apt-get --yes --force-yes install python-daemon", shell=True)
+           print("daemon 미설치 -> 설치")
+
         ##알람 기능##
         lbl_alarm = Gtk.Label()
         lbl_alarm.set_markup("<span font='13'><b> 알람 기능 </b></span>")
