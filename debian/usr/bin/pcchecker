@@ -69,6 +69,20 @@ class Application(Gtk.Window):
         self.total_cnt = 0
         self.cnt = 0
 
+        ###### refresh ######
+        box_refresh = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        btn_ref = Gtk.Button()
+        img_ref = Gtk.Image()
+        img_ref.set_from_file("/usr/share/icons/hicolor/256x256/apps/pc_refresh.png")
+        btn_ref.add(img_ref)
+        btn_ref.set_tooltip_text("보안 상태를 다시 점검합니다.")
+        btn_ref.connect("clicked", self.fnt_refresh)
+        box_refresh.pack_end(btn_ref, False, False, 0)
+
+        row = Gtk.ListBoxRow()
+        row.add(box_refresh)
+        stc_security_status.add(row)
+
         ###### status ######
         lbl_total_status = self.lbl_total_status
         box_total_status = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
@@ -94,16 +108,6 @@ class Application(Gtk.Window):
 
         row = Gtk.ListBoxRow()
         row.add(box_total_score)
-        stc_security_status.add(row)
-
-        ###### refresh ######
-        btn_refresh = Gtk.Button(label="다시 검사하기")
-        box_refresh = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
-        btn_refresh.connect("clicked", self.fnt_refresh)
-        box_refresh.pack_start(btn_refresh, True, False, 0)
-
-        row = Gtk.ListBoxRow()
-        row.add(box_refresh)
         stc_security_status.add(row)
 
         # os info
@@ -298,7 +302,7 @@ class Application(Gtk.Window):
 
         btn_pw = Gtk.Button()
         img_set1 = Gtk.Image()
-        img_set1.set_from_file("/usr/share/icons/hicolor/256x256/apps/icon.png")
+        img_set1.set_from_file("/usr/share/icons/hicolor/256x256/apps/pc_icon.png")
         btn_pw.add(img_set1)
         btn_pw.connect("clicked", self.fnt_open_user)
         box_pw.pack_start(btn_pw, False, False, 0)
@@ -332,13 +336,17 @@ class Application(Gtk.Window):
         box_update.pack_start(lbl_update_name, False, False, 15)
         box_update.pack_start(lbl_update_info, True, True, 0)
 
-        btn_fupdate = Gtk.Button(label="업그레이드")
+        btn_fupdate = Gtk.Button()
+        img_up = Gtk.Image()
+        img_up.set_from_file("/usr/share/icons/hicolor/256x256/apps/pc_upgrade.png")
+        btn_fupdate.add(img_up)
+        btn_fupdate.set_tooltip_text("현재 업그레이드 가능한 패키지를 자동으로 업그레이드합니다.")
         btn_fupdate.connect("clicked", self.fnt_fupdate)
         box_update.pack_start(btn_fupdate, False, False, 0)
 
         btn_update = Gtk.Button()
         img_set2 = Gtk.Image()
-        img_set2.set_from_file("/usr/share/icons/hicolor/256x256/apps/icon.png")
+        img_set2.set_from_file("/usr/share/icons/hicolor/256x256/apps/pc_icon.png")
         btn_update.add(img_set2)
         btn_update.connect("clicked", self.fnt_open_updatemanager)
         box_update.pack_start(btn_update, False, False, 0)
@@ -401,11 +409,12 @@ class Application(Gtk.Window):
         box_ufw.pack_start(lbl_ufw_info, True, True, 0)
 
         switch_ufw.connect("notify::active", self.fnt_ufw_toggled)
+        switch_ufw.set_tooltip_text("방화벽 상태를 즉시 변경합니다.")
         box_ufw.pack_start(switch_ufw, False, False, 0)
 
         btn_ufw = Gtk.Button()
         img_set3 = Gtk.Image()
-        img_set3.set_from_file("/usr/share/icons/hicolor/256x256/apps/icon.png")
+        img_set3.set_from_file("/usr/share/icons/hicolor/256x256/apps/pc_icon.png")
         btn_ufw.add(img_set3)
         btn_ufw.connect("clicked", self.fnt_open_ufw)
         box_ufw.pack_start(btn_ufw, False, False, 0)
@@ -484,7 +493,7 @@ class Application(Gtk.Window):
 
         btn_ts = Gtk.Button()
         img_set4 = Gtk.Image()
-        img_set4.set_from_file("/usr/share/icons/hicolor/256x256/apps/icon.png")
+        img_set4.set_from_file("/usr/share/icons/hicolor/256x256/apps/pc_icon.png")
         btn_ts.add(img_set4)
         btn_ts.connect("clicked", self.fnt_open_timeshift)
         box_ts.pack_start(btn_ts, False, False, 0)
