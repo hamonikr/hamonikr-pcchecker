@@ -542,18 +542,22 @@ class Application(Gtk.Window):
            subprocess.call("sudo apt-get --yes --force-yes install python-daemon", shell=True)
            print("daemon 미설치 -> 설치")
 
+
         ##알람 기능##
         lbl_alarm = Gtk.Label()
         lbl_alarm.set_markup("<span font='13'><b> 알람 기능 </b></span>")
         switch_alarm = Gtk.Switch()
+        switch_alarm.set_tooltip_text("PC의 보안 상태를 체크하여 '위험' 상태일 경우 주기적으로 알림을 표시합니다.")
 
+        self.lbl_alarm_info.set_markup("알람이 <span color='red'><b>꺼져</b></span> 있습니다.")
+        # switch_alarm.set_active(0)
         try:
-            subprocess.check_output("crontab -l | grep alarm.py", shell=True, stderr=subprocess.STDOUT).decode().strip()
-            self.lbl_ufw_info.set_markup("알람이 <span color='green'><b>켜져</b></span> 있습니다.")
-            switch_alarm.set_active(1)
-        except subprocess.CalledProcessError as e:
-            self.lbl_alarm_info.set_markup("알람이 <span color='red'><b>꺼져</b></span> 있습니다.")
+            subprocess.check_output("systemctl status on-calendar.timer | grep inactive", shell=True, stderr=subprocess.STDOUT).decode().strip()
+            self.lbl_ufw_info.set_markup("알람이 <span color='red'><b>꺼져</b></span> 있습니다.")
             switch_alarm.set_active(0)
+        except subprocess.CalledProcessError as e:
+            self.lbl_alarm_info.set_markup("알람이 <span color='green'><b>켜져</b></span> 있습니다.")
+            switch_alarm.set_active(1)
         switch_alarm.connect("notify::active", self.fnt_alarm_toggled)
 
         box_alarm = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
@@ -651,10 +655,11 @@ class Application(Gtk.Window):
     def fnt_alarm_toggled(self, alarm_switch, state):
         self.logger("Switch alarm")
         if alarm_switch.get_active():
-            #subprocess.call("sudo ufw enable", shell=True)
-            self.lbl_ufw_info.set_markup("알람이 <span color='green'><b>켜져</b></span> 있습니다.")
+            subprocess.call("systemctl daemon-reload", shell=True)
+            subprocess.call("systemctl restart on-calendar.timer", shell=True)
+            self.lbl_alarm_info.set_markup("알람이 <span color='green'><b>켜져</b></span> 있습니다.")
         else:
-            #subprocess.call("sudo ufw disable", shell=True)
+            subprocess.call("systemctl stop on-calendar.timer", shell=True)
             self.lbl_alarm_info.set_markup("알람이 <span color='red'><b>꺼져</b></span> 있습니다.")
 
     def fnt_open_timeshift(self, widget):

@@ -1,0 +1,9 @@
+[Unit]
+Description=Test for OnCalendar timer
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/test_on_calendar.sh
+
+[Install]
+WantedBy=multi-user.target

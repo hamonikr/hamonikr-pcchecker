@@ -38,25 +38,24 @@ issues](https://img.shields.io/github/issues/2020-Invesum-Internship/hamonikr-pc
 * `timeshift`
 * `gufw`
 
-## 데비안 패키지 빌드
+## 패키지 설치
 
-다운로드 받은 디렉토리 안에서 아래와 같이 빌드하면 release 폴더 안에 설치 가능한 데비안 파일이 생성됩니다.
+터미널(명령 프롬프트)에서 다음과 같이 프로그램 메뉴에 PC 지킴이가 설치할 수 있습니다
 
-```
-./build
-```
 
 ## HamoniKR PC Checker 설치
 
 ```
-sudo dpkg -i release/*.deb
+sudo add-apt-repository ppa:yeji980407/ppa
+sudo apt-get update
+sudo apt-get install hamonikr-pcchecker
 
 ```
 
 ## HamoniKR PC Checker 삭제
 
 ```
-sudo apt remove --purge hamonikr-pcchecker
+sudo apt-get --purge remove hamonikr-pcchecker
 ```
 
 ## Using HamoniKR PC Checker

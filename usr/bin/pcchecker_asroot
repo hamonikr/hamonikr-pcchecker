@@ -2,6 +2,7 @@
 
 if hash pkexec 2> /dev/null; then
 	pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY PCCHECKER_USER=$USER QT_X11_NO_MITSHM=1 pcchecker
+
 else
 	pcchecker
 fi
