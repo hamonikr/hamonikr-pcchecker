@@ -1,5 +1,5 @@
 [Unit]
-Description=Test for OnCalendar timer
+Description=PcChecker timer
 
 [Timer]
 OnCalendar=*-*-* *:00:00
