@@ -394,7 +394,7 @@ class Application(Gtk.Window):
         box_alarm = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
         box_alarm.pack_start(lbl_alarm, False, False, 0)
         box_alarm.pack_start(self.lbl_alarm_info, True, False, 0)
-        box_alarm.pack_start(switch_alarm, True, True, 0)
+        box_alarm.pack_start(switch_alarm, False, True, 0)
 
         row = Gtk.ListBoxRow()
         row.add(box_alarm)

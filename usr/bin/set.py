@@ -121,7 +121,7 @@ def set_backup():
         backup_list = subprocess.check_output("ls " + ts_path, shell=True).decode().strip().split('\n')
         backup_list_len = int(len(backup_list))
         if (backup_list_len == 1 and os.listdir(ts_path) == []):
-            backup_ts_status = "<span background='red' font='15' color='white'><b> 위   험 </b></span>"
+            ts_status = "<span background='red' font='15' color='white'><b> 위   험 </b></span>"
             backup_list_len = 0
         else:
             backup_list = sorted(backup_list, reverse=True)

@@ -1,5 +1,6 @@
 import subprocess
 from datetime import date
+import os
 
 def count_score():
     cnt = 0
@@ -28,21 +29,30 @@ def count_score():
         cnt += 2
 
     ts_path = "/timeshift/snapshots"
-    backup_list = subprocess.check_output("ls " + ts_path, shell=True).decode().strip().split('\n')
-    backup_list_len = int(len(backup_list))
-    backup_list = sorted(backup_list, reverse=True)
-    bk_date_list = backup_list[0].split('_')[0].split('-')
-    bk_date = date(int(bk_date_list[0]), int(bk_date_list[1]), int(bk_date_list[2]))
-    diff_day = str(date.today() - bk_date)
-    if "0:00:00" == diff_day:
-        diff_day = 0
+    if os.path.isdir(ts_path):
+        backup_list = subprocess.check_output("ls " + ts_path, shell=True).decode().strip().split('\n')
+        backup_list_len = int(len(backup_list))
+        if (backup_list_len == 1 and os.listdir(ts_path) == []):
+            cnt+=0
+        else:
+            backup_list = sorted(backup_list, reverse=True)
+            bk_date_list = backup_list[0].split('_')[0].split('-')
+            bk_date = date(int(bk_date_list[0]), int(bk_date_list[1]), int(bk_date_list[2]))
+            diff_day = str(date.today() - bk_date)
+            if "0:00:00" == diff_day:
+                diff_day = 0
+            else:
+                diff_day = int(str(date.today() - bk_date).split(' day')[0])
+            total_cnt += 2
+            if 30 > diff_day:
+                cnt += 2
+            elif 60 > diff_day:
+                cnt += 1
+            else:
+                cnt += 0
     else:
-        diff_day = int(str(date.today() - bk_date).split(' day')[0])
-    total_cnt += 2
-    if 30 > diff_day:
-        cnt += 2
-    elif 60 > diff_day:
-        cnt += 1
+        total_cnt+=0
+
     return (cnt,total_cnt)
 
 # status n info

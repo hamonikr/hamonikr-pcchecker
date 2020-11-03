@@ -2,7 +2,7 @@
 Description=PcChecker timer
 
 [Timer]
-OnCalendar=*-*-* *:*:*
+OnCalendar=*-*-* *:00:00
 AccuracySec=1s
 
 [Install]

@@ -2,7 +2,7 @@ import count
 import subprocess
 
 (cnt,total_cnt) = count.count_score()
-total_score_val = round(count.cnt / count.total_cnt * 100)
+total_score_val = round(cnt / total_cnt * 100)
 if 70 >= total_score_val:
     display = str(subprocess.check_output("ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1",shell=True).decode().strip())
     user = str(subprocess.check_output("who | grep '" + display + "' | awk '{print $1}' | head -n 1",shell=True).decode().strip())
