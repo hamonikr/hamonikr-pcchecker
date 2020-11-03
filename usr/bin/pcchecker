@@ -462,7 +462,7 @@ class Application(Gtk.Window):
         self.lbl_ufw_info.set_markup(ufw_info)
         self.switch_ufw.set_active(switch_ufw.get_active())
 
-    def fnt_ufw_toggled(self, switch_ufw):
+    def fnt_ufw_toggled(self, switch_ufw, state):
         self.logger("Switch ufw")
         if switch_ufw.get_active():
             subprocess.call("sudo ufw enable", shell=True)
