@@ -47,7 +47,6 @@ issues](https://img.shields.io/github/issues/2020-Invesum-Internship/hamonikr-pc
 sudo add-apt-repository ppa:yeji980407/ppa
 sudo apt-get update
 sudo apt-get install hamonikr-pcchecker
-
 ```
 ### ppa 사용 불가한 환경일 경우 (Gooroom OS)
 
