@@ -20,16 +20,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0927e9aa-105d-4517-8996-c880311c6e83" name="Default Changelist" comment="설정 버튼 이미지 추가(ing)">
+      <change afterPath="$PROJECT_DIR$/release/hamonikr-pcchecker-2.1.0hamonikr_all.deb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usr/bin/count.py" beforeDir="false" afterPath="$PROJECT_DIR$/usr/bin/count.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usr/bin/notify" beforeDir="false" afterPath="$PROJECT_DIR$/usr/bin/notify" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usr/bin/pcchecker" beforeDir="false" afterPath="$PROJECT_DIR$/usr/bin/pcchecker" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usr/bin/set.py" beforeDir="false" afterPath="$PROJECT_DIR$/usr/bin/set.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/debian/DEBIAN/md5sums" beforeDir="false" afterPath="$PROJECT_DIR$/debian/DEBIAN/md5sums" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/debian/usr/bin/pcchecker" beforeDir="false" afterPath="$PROJECT_DIR$/debian/usr/bin/pcchecker" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -47,6 +53,11 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/debian/usr/bin" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -164,11 +175,11 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2622" y="352" width="565" height="385" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1598513690032" />
-    <state x="743" y="275" width="426" height="508" key="FileChooserDialogImpl" timestamp="1604388301477">
+    <state x="743" y="275" width="424" height="483" key="FileChooserDialogImpl" timestamp="1605079508386">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="2663" y="286" width="426" height="508" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1598423953365" />
-    <state x="743" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1604388301477" />
+    <state x="743" y="275" width="424" height="483" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1605079508386" />
     <state x="2384" y="175" key="SettingsEditor" timestamp="1598424010685">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>

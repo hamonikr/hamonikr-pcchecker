@@ -1,5 +1,5 @@
-b6e62a68cc85fa6adcfc80fa0e192367  usr/bin/pcchecker_asroot
-358dd08592da1ec9c4c421d1865eec7c  usr/bin/pcchecker
+855e9822363378f6e0150e82e3d5887e  usr/bin/pcchecker_asroot
+358dd08592da1ec9c4c421d1865eec7c  usr/bin/pcchecker.py
 82ab7f8e045311436f6cd5c99e89eb94  usr/bin/set.py
 9ba752c8c947aaba8c5d69959823d2a6  usr/bin/__pycache__/set.cpython-36.pyc
 35ebccc3c77c800799527702003074c4  usr/bin/__pycache__/count.cpython-36.pyc
