@@ -364,8 +364,8 @@ class Application(Gtk.Window):
         box_ufw.pack_start(self.lbl_ufw_status, False, False, 0)
         box_ufw.pack_start(lbl_ufw_name, False, False, 15)
         box_ufw.pack_start(self.lbl_ufw_info, True, True, 0)
-        box_ufw.pack_start(btn_ufw, False, False, 0)
         box_ufw.pack_start(self.switch_ufw, False, False, 0)
+        box_ufw.pack_start(btn_ufw, False, False, 0)
         row.add(box_ufw)
         stc_security_checklist.add(row)
 
