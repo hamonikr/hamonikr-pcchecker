@@ -28,6 +28,7 @@ def count_score():
     if ufw_val == "활성" or ufw_val == "active":
         cnt += 2
 
+    total_cnt += 2
     ts_path = "/timeshift/snapshots"
     if os.path.isdir(ts_path):
         backup_list = subprocess.check_output("ls " + ts_path, shell=True).decode().strip().split('\n')
@@ -43,7 +44,6 @@ def count_score():
                 diff_day = 0
             else:
                 diff_day = int(str(date.today() - bk_date).split(' day')[0])
-            total_cnt += 2
             if 30 > diff_day:
                 cnt += 2
             elif 60 > diff_day:
