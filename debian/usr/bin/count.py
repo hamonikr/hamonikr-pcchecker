@@ -1,11 +1,14 @@
+# count the score of 'check list' and set the score at 'security status'
 import subprocess
 from datetime import date
 import os
 
+# count the score of 'check list'
 def count_score():
     cnt = 0
     total_cnt = 0
 
+    # count the score of 'password'
     pw_date = subprocess.check_output("sudo passwd -S $PCCHECKER_USER | awk '{print $3}'", shell=True).decode().split(
         '/')
     total_cnt += 2
@@ -18,16 +21,19 @@ def count_score():
     elif 90 >= pw_date:
         cnt += 1
 
+    # count the score of 'update'
     update_list = subprocess.check_output("apt list --upgradable | wc -l", shell=True).decode().strip()
     total_cnt += 2
     if 5 >= int(str(update_list)):
         cnt += 2
 
+    # count the score of 'ufw'
     ufw_val = subprocess.check_output("sudo ufw status | awk '{print $2}' | head -1", shell=True).decode().strip()
     total_cnt += 2
     if ufw_val == "활성" or ufw_val == "active":
         cnt += 2
 
+    # count the score of 'backup'
     total_cnt += 2
     ts_path = "/timeshift/snapshots"
     if os.path.isdir(ts_path):
@@ -48,17 +54,14 @@ def count_score():
                 cnt += 2
             elif 60 > diff_day:
                 cnt += 1
-            else:
-                cnt += 0
-    else:
-        total_cnt+=0
-
     return (cnt,total_cnt)
 
-# status n info
+# set the score at 'security status'
 def set_score():
-    (cnt,total_cnt) = count_score()
+    (cnt,total_cnt) = count_score()     # count score
     total_score_val = round(cnt / total_cnt * 100)
+
+    # set the total score and status
     if 100 == total_score_val:
         total_score_text = "<span color='green' font='40'><b>" + str(total_score_val) + "</b></span><span><b>/100</b></span>"
         total_status_text = "<span color='green' font='80'><b>안전</b></span>"
