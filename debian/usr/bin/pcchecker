@@ -22,10 +22,10 @@ from datetime import date, datetime
 class Application(Gtk.Window):
 
     def __init__(self):
-        self.logger("HamoniKR PC Checker Start")
+        self.logger("Hamonikr PC Checker Start")
 
         # init and show main window
-        Gtk.Window.__init__(self, title="HamoniKR PC Checker")
+        Gtk.Window.__init__(self, title="Hamonikr PC Checker")
         self.set_border_width(10)
         box_outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.add(box_outer)
@@ -125,9 +125,9 @@ class Application(Gtk.Window):
         row.add(box_os)
         stc_pc_info.add(row)
 
-        ## search cinnamon info and set gui (only for HamoniKR users) ##
+        ## search cinnamon info and set gui (only for Hamonikr users) ##
         # TODO : 다른 DE 사용자도 도움이 되는 정보제공으로 변경 필요.
-        if os_name == "HamoniKR":
+        if os_name == "Hamonikr":
             # cinnamon info
             cinnamon_ver = self.fnt_command_return_word("cinnamon --version", 'Cinnamon ', '\n')
 
@@ -439,9 +439,9 @@ class Application(Gtk.Window):
     def fnt_open_user(self, widget):
         self.logger("Open user - pw")
         osname = self.fnt_command_return_word("lsb_release -i", 'ID:\t', '\n')
-        # for HamoniKR users
-        if osname == "HamoniKR":
-            subprocess.call('su - $PCCHECKER_USER -c "cinnamon-settings user"', shell=True)
+        # for Hamonikr users
+        if osname == "Hamonikr":
+            subprocess.call('su $PCCHECKER_USER -c "cinnamon-settings user"', shell=True)
         # for GooroomOS and TmaxOS users
         else :
             subprocess.call('XDG_CURRENT_DESKTOP=GNOME gnome-control-center user-accounts', shell=True)
@@ -457,7 +457,7 @@ class Application(Gtk.Window):
     def fnt_open_updatemanager(self, widget):
         self.logger("Open update manager")
         osname = self.fnt_command_return_word("lsb_release -i", 'ID:\t', '\n')
-        if osname == "HamoniKR":
+        if osname == "Hamonikr":
             subprocess.call('mintupdate', shell=True)
         elif osname == "Gooroom":
             subprocess.call('gooroom-update-launcher', shell=True)
