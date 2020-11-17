@@ -311,13 +311,14 @@ class Application(Gtk.Window):
         self.lbl_update_info.set_markup(update_info)
 
         # add one-click update button
-        btn_fupdate = Gtk.Button()
-        img_up = Gtk.Image()
-        img_up.set_from_file("/usr/share/icons/hicolor/256x256/apps/pc_upgrade.png")
-        btn_fupdate.add(img_up)
-        btn_fupdate.set_tooltip_text("현재 업그레이드 가능한 패키지를 자동으로 업그레이드합니다.")
-        btn_fupdate.connect("clicked", self.fnt_fupdate)
-        btn_fupdate.connect("pressed",self.fnt_fupdate_pressed)
+        self.fupdate_flag = 0
+        self.btn_fupdate = Gtk.Button()
+        self.img_up = Gtk.Image()
+        self.img_up.set_from_file("/usr/share/icons/hicolor/256x256/apps/pc_upgrade.png")
+        self.btn_fupdate.add(self.img_up)
+        self.btn_fupdate.set_tooltip_text("현재 업그레이드 가능한 패키지를 자동으로 업그레이드합니다.")
+        self.btn_fupdate.connect("clicked", self.fnt_fupdate)
+        self.btn_fupdate.connect("pressed",self.fnt_fupdate_pressed)
 
         # add update setting button
         btn_update = Gtk.Button()
@@ -325,14 +326,13 @@ class Application(Gtk.Window):
         img_set2.set_from_file("/usr/share/icons/hicolor/256x256/apps/pc_icon.png")
         btn_update.add(img_set2)
         btn_update.connect("clicked", self.fnt_open_updatemanager)
-        btn_update.connect("released", self.fnt_close_updatemanager)
 
         # set gui
         box_update = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         box_update.pack_start(self.lbl_update_status, False, False, 0)
         box_update.pack_start(lbl_update_name, False, False, 15)
         box_update.pack_start(self.lbl_update_info, True, True, 0)
-        box_update.pack_start(btn_fupdate, False, False, 0)
+        box_update.pack_start(self.btn_fupdate, False, False, 0)
         box_update.pack_start(btn_update, False, False, 0)
         row.add(box_update)
         stc_security_checklist.add(row)
@@ -464,30 +464,34 @@ class Application(Gtk.Window):
             subprocess.call('gooroom-update-launcher', shell=True)
         elif osname == "Tmaxos":
             subprocess.call('XDG_CURRENT_DESKTOP=GNOME gnome-control-center info-overview', shell=True)
-
-    # reload update info when update setting window is closed
-    def fnt_close_updatemanager(self, widget):
-        self.logger("Close update manager")
-        osname = self.fnt_command_return_word("lsb_release -i", 'ID:\t', '\n')
-        (update_status, update_info) = set.set_update(osname)
-        self.lbl_update_status.set_markup(update_status)
-        self.lbl_update_info.set_markup(update_info)
+        self.fupdate_flag = 1
+        self.lbl_update_info.set_markup("오른쪽 <b>새로고침</b> 버튼을 클릭해 정보를 다시 불러와 주세요.")
+        self.img_up.set_from_file("/usr/share/icons/hicolor/256x256/apps/pc_upgrade_refresh.png")
+        self.btn_fupdate.add(self.img_up)
+        self.btn_fupdate.set_tooltip_text("업데이트 상태를 다시 점검합니다.")
 
     # update and upgrade system when one-click update button is clicked
     def fnt_fupdate(self, widget):
-        self.logger("System upgrade")
         osname = self.fnt_command_return_word("lsb_release -i", 'ID:\t', '\n')
-        if osname== "Hamonikr" :
-            subprocess.call('sudo mintupdate-cli --yes upgrade', shell=True)
-        else :
-            subprocess.call('sudo apt-get --yes update && sudo apt-get --yes upgrade', shell=True)
+        if self.fupdate_flag==0 :
+            self.logger("System upgrade")
+            if osname== "Hamonikr" :
+                subprocess.call('sudo mintupdate-cli --yes upgrade', shell=True)
+            else :
+                subprocess.call('sudo apt-get --yes update && sudo apt-get --yes upgrade', shell=True)
+        else:
+            self.fupdate_flag = 0
+            self.img_up.set_from_file("/usr/share/icons/hicolor/256x256/apps/pc_upgrade.png")
+            self.btn_fupdate.add(self.img_up)
+            self.btn_fupdate.set_tooltip_text("현재 업그레이드 가능한 패키지를 자동으로 업그레이드합니다.")
         (update_status, update_info) = set.set_update(osname)
         self.lbl_update_status.set_markup(update_status)
         self.lbl_update_info.set_markup(update_info)
 
     # notify that update is in progress when one-click update button is clicked
     def fnt_fupdate_pressed(self,widget):
-        self.lbl_update_info.set_markup("업데이트 진행 중입니다. 잠시만 기다려주세요.")
+        if self.fupdate_flag == 0:
+            self.lbl_update_info.set_markup("업데이트 진행 중입니다. 잠시만 기다려주세요.")
 
     # open gufw window when ufw setting button is clicked
     def fnt_open_ufw(self, widget):

@@ -1,5 +1,6 @@
 bd4befa9cf173cec77609d3a57b1217c  usr/share/applications/pcchecker.desktop
 f01718e4e715aec948de5c9319537b2f  usr/share/icons/hicolor/256x256/apps/pccheckericon.png
+84f20fc295a275f36219cfe9615879e9  usr/share/icons/hicolor/256x256/apps/pc_upgrade_refresh.png
 13822f9f62e5ff53b8da075fbaff0634  usr/share/icons/hicolor/256x256/apps/pcchecker.png
 53125685e4d01781e2141aff2e4e2305  usr/share/icons/hicolor/256x256/apps/pc_refresh.png
 14ffd36d3e0d09239ef615dfd8aada3a  usr/share/icons/hicolor/256x256/apps/pc_icon.png
@@ -7,11 +8,11 @@ f01718e4e715aec948de5c9319537b2f  usr/share/icons/hicolor/256x256/apps/pcchecker
 eeabacd47be1fd856b9d85cfcee0276a  usr/bin/__pycache__/count.cpython-36.pyc
 9f432ea4b5ee892b43c7a66008555644  usr/bin/__pycache__/set.cpython-36.pyc
 87ada172abc5058a8950bd13aae78e55  usr/bin/__pycache__/count.cpython-38.pyc
-211485757e8cdd2a52cebaab6fa137ca  usr/bin/__pycache__/set.cpython-38.pyc
+5f31ae3894b0eedb0dff9c14c71aa867  usr/bin/__pycache__/set.cpython-38.pyc
 b6e62a68cc85fa6adcfc80fa0e192367  usr/bin/pcchecker_asroot
 498ab2c4fcf07d46696360fbae0d293d  usr/bin/notify
 3a82462797da1e5f5611affaa8c5af29  usr/bin/count.py
 315050b962cd606ebe602640006f5fa9  usr/bin/test.py
-5763cbf4daaaaf97f5239c4610a17257  usr/bin/set.py
+008c53f03be3e5bc911085f4eb61ccb6  usr/bin/set.py
 dee2bd720f6b04edf38fe618d8cba35f  usr/bin/pcchecker_alarm.sh
-c53044ed1a733d98a6511ae33a03a9f8  usr/bin/pcchecker
+617ec7eb1297a04c17c4bf2cdfdaf50d  usr/bin/pcchecker
