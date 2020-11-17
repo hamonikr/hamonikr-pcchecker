@@ -29,11 +29,20 @@ def set_password():
     return (pw_status, pw_past)
 
 ## search and set update info ##
-def set_update():
-    # search for the number of upgradeable packages
-    update_list = subprocess.check_output("apt list --upgradable | wc -l", shell=True).decode().strip()
+def set_update(osname):
+    # for Hamonikr users
+    if osname == "Hamonikr":
+        # search for the number of upgradeable packages
+        update_list = subprocess.check_output("mintupdate-cli list | wc -l", shell=True).decode().strip()
+        update_list = int(str(update_list))
+    # for GooroomOS and TmaxOS users
+    else:
+        # search for the number of upgradeable packages
+        update_list = subprocess.check_output("apt list --upgradable | wc -l", shell=True).decode().strip()
+        update_list = int(str(update_list)) - 1  # doesn't count a info line
+
     # state according to the number of upgradable packages
-    if 5 >= int(str(update_list)):
+    if 5 >= update_list:
         update_status = "<span background='green' font='15' color='white'><b> 최   신 </b></span>"
         update_info = "업그레이드 가능한 패키지가 <span color='green'><b>" + str(update_list) + "</b></span> 개 있습니다."
     else:
@@ -100,50 +109,33 @@ def set_backup():
     except subprocess.CalledProcessError as e:
         subprocess.call("sudo apt-get --yes --force-yes install timeshift", shell=True)
 
-    # set the path of backup snapshots
-    ts_path = "/timeshift/snapshots"
-    backup_list = ""
-
-    if os.path.isdir(ts_path):      # access to the path of backup snapshots
-        # search for the number of backup snapshots
-        backup_list = subprocess.check_output("ls " + ts_path, shell=True).decode().strip().split('\n')
-        backup_list_len = int(len(backup_list))
-
-        # set the info if snapshot doesn't exists
-        if (backup_list_len == 1 and os.listdir(ts_path) == []):
-            ts_status = "<span background='red' font='15' color='white'><b> 위   험 </b></span>"
-            backup_list_len = 0
-        # state according to the recent backup date
+    # search for the number of backup snapshots
+    backup_list_len = int(str(subprocess.check_output("sudo timeshift --list | grep '>' | wc -l", shell=True).decode()))
+    # state according to the recent backup date
+    if backup_list_len >= 1 :
+        bk_date = str(subprocess.check_output("sudo timeshift --list | grep '>' | awk '{print $3}'|tail -1", shell=True).decode()).split('_')[0].split('-')
+        bk_date = date(int(bk_date[0]), int(bk_date[1]), int(bk_date[2]))
+        diff_day = str(date.today() - bk_date)
+        if "0:00:00" == diff_day:
+            diff_day = 0
         else:
-            backup_list = sorted(backup_list, reverse=True)
-            bk_date_list = backup_list[0].split('_')[0].split('-')
-            bk_date = date(int(bk_date_list[0]), int(bk_date_list[1]), int(bk_date_list[2]))
-            diff_day = str(date.today() - bk_date)
-            if "0:00:00" == diff_day:
-                diff_day = 0
-            else:
-                diff_day = int(str(date.today() - bk_date).split(' day')[0])
+            diff_day = int(str(date.today() - bk_date).split(' day')[0])
 
-            if 30 > diff_day:
-                ts_status = "<span background='green' font='15' color='white'><b> 안   전 </b></span>"
-            elif 60 > diff_day:
-                ts_status = "<span background='orange' font='15' color='white'><b> 주   의 </b></span>"
-            else:
-                ts_status = "<span background='red' font='15' color='white'><b> 위   험 </b></span>"
-    # set the info if snapshots' path doesn't exist
+        if 30 > diff_day:
+            ts_status = "<span background='green' font='15' color='white'><b> 안   전 </b></span>"
+        elif 60 > diff_day:
+            ts_status = "<span background='orange' font='15' color='white'><b> 주   의 </b></span>"
+        else:
+            ts_status = "<span background='red' font='15' color='white'><b> 위   험 </b></span>"
+        # set the date of recent backup
+        ts_info = (str(backup_list_len) + " 개의 백업이 있습니다.\n마지막 백업은 <b>" + str(bk_date.year) + "년" + str(bk_date.month) + "월" +
+                   str(bk_date.day) + "일</b> 입니다.")
+    # set the info if snapshot doesn't exists
     else:
         ts_status = "<span background='red' font='15' color='white'><b> 위   험 </b></span>"
-        backup_list_len = 0
+        ts_info = ("시스템 안전을 위해 백업을 진행하십시오.")
 
-    # set the date of recent backup
-    if (backup_list_len >= 1 and os.listdir(ts_path)):
-        ts_info=(str(len(backup_list)) + " 개의 백업이 있습니다.\n마지막 백업은 <b>" + bk_date_list[0] + "년" + bk_date_list[1] + "월" +
-            bk_date_list[2] + "일</b> 입니다.")
-        lbl_ts_info.set_markup(ts_info)
-    # set the info if snapshot doesn't exist
-    else:
-        ts_info=("시스템 안전을 위해 백업을 진행하십시오.")
-        lbl_ts_info.set_markup(ts_info)
+    lbl_ts_info.set_markup(ts_info)
     lbl_ts_status.set_markup(ts_status)
     return (lbl_ts_status, lbl_ts_info, ts_status, ts_info)
 

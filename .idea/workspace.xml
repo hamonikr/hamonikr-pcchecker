@@ -20,8 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0927e9aa-105d-4517-8996-c880311c6e83" name="Default Changelist" comment="설정 버튼 이미지 추가(ing)">
-      <change beforePath="$PROJECT_DIR$/debian/DEBIAN/md5sums" beforeDir="false" afterPath="$PROJECT_DIR$/debian/DEBIAN/md5sums" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/debian/usr/bin/pcchecker" beforeDir="false" afterPath="$PROJECT_DIR$/debian/usr/bin/pcchecker" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/debian/usr/bin/set.py" beforeDir="false" afterPath="$PROJECT_DIR$/debian/usr/bin/set.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

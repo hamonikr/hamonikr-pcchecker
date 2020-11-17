@@ -303,7 +303,8 @@ class Application(Gtk.Window):
         self.lbl_update_status = Gtk.Label()
         self.lbl_update_info = Gtk.Label()
 
-        (update_status, update_info) = set.set_update()     # search update info
+        osname = self.fnt_command_return_word("lsb_release -i", 'ID:\t', '\n')
+        (update_status, update_info) = set.set_update(osname)     # search update info
 
         lbl_update_name.set_markup("<b>업그레이드</b>")
         self.lbl_update_status.set_markup(update_status)
@@ -467,15 +468,20 @@ class Application(Gtk.Window):
     # reload update info when update setting window is closed
     def fnt_close_updatemanager(self, widget):
         self.logger("Close update manager")
-        (update_status, update_info) = set.set_update()
+        osname = self.fnt_command_return_word("lsb_release -i", 'ID:\t', '\n')
+        (update_status, update_info) = set.set_update(osname)
         self.lbl_update_status.set_markup(update_status)
         self.lbl_update_info.set_markup(update_info)
 
     # update and upgrade system when one-click update button is clicked
     def fnt_fupdate(self, widget):
         self.logger("System upgrade")
-        subprocess.call('sudo apt-get --yes update && sudo apt-get --yes upgrade', shell=True)
-        (update_status, update_info) = set.set_update()
+        osname = self.fnt_command_return_word("lsb_release -i", 'ID:\t', '\n')
+        if osname== "Hamonikr" :
+            subprocess.call('sudo mintupdate-cli --yes upgrade', shell=True)
+        else :
+            subprocess.call('sudo apt-get --yes update && sudo apt-get --yes upgrade', shell=True)
+        (update_status, update_info) = set.set_update(osname)
         self.lbl_update_status.set_markup(update_status)
         self.lbl_update_info.set_markup(update_info)
 
