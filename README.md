@@ -44,7 +44,7 @@ issues](https://img.shields.io/github/issues/2020-Invesum-Internship/hamonikr-pc
 ## HamoniKR PC Checker 설치
 
 ```
-sudo add-apt-repository ppa:yeji980407/ppa
+sudo add-apt-repository ppa:yeji980407/hamonikr-pcchecker
 sudo apt-get update
 sudo apt-get install hamonikr-pcchecker
 ```
