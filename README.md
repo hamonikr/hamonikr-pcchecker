@@ -96,7 +96,8 @@ key](https://allcontributors.org/docs/en/emoji-key).
 
 ## Contact
 
-연락이 필요한 경우 <ryuish541@gmail.com> 또는 <yejisoft@gmail.com> 로 내용을 보내주세요.
+연락이 필요한 경우 <ryuish541@gmail.com> 또는 <yejisoft@gmail.com> 로 내용을 보내주세요.  
+프로젝트의 보다 자세한 사항과 모든 산출물을 [여기](http://team.hamonikr.org:18090/display/PC)서 확인하실 수 있습니다.
 
 ## License
 
