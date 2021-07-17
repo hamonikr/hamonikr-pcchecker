@@ -1,10 +1,16 @@
 Package: hamonikr-pcchecker
-Version: 2.1.0hamonikr
+Version: 2.0.0
 Architecture: all
 Maintainer: HamoniKR <pkg@hamonikr.org>
 Installed-Size: 1011980
-Pre-Depends: dpkg (>= 1.15.6)
-Depends: 
+Build-Depends: dpkg (>= 1.15.6),
+               python3,
+               gtk (>=3.0)
+Depends: ufw,
+         gufw,
+         timeshift,
+         gir1.2-appindicator3-0.1,
+         pciutils
 Recommends: 
 Section: utils
 Priority: optional

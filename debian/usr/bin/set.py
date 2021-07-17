@@ -55,23 +55,6 @@ def set_ufw():
     lbl_ufw_info = Gtk.Label()
     lbl_ufw_status = Gtk.Label()
     switch_ufw = Gtk.Switch()
-    # install ufw (necessary to search ufw info) if not installed
-    try:
-        ufw_install = subprocess.check_output("dpkg --get-selections | grep ^ufw | awk '{print $2}'",
-                                              shell=True).decode().strip()
-        if ufw_install != 'install':
-            subprocess.call("sudo apt-get --yes --force-yes install ufw", shell=True)
-    except subprocess.CalledProcessError as e:
-        subprocess.call("sudo apt-get --yes --force-yes install ufw", shell=True)
-
-    # install gufw (necessary for ufw setting gui) if not installed
-    try:
-        gufw_install = subprocess.check_output("dpkg --get-selections | grep gufw | awk '{print $2}'",
-                                               shell=True).decode().strip()
-        if gufw_install != 'install':
-            subprocess.call("sudo apt-get --yes --force-yes install gufw", shell=True)
-    except subprocess.CalledProcessError as e:
-        subprocess.call("sudo apt-get --yes --force-yes install gufw", shell=True)
 
     # search for the active/inactive status of ufw
     ufw_val = subprocess.check_output("sudo ufw status | awk '{print $2}' | head -1", shell=True).decode().strip()
@@ -100,14 +83,6 @@ def set_ufw():
 def set_backup():
     lbl_ts_status = Gtk.Label()
     lbl_ts_info = Gtk.Label()
-    # install timeshift (necessary to search backup info) if not installed
-    try:
-        ts_install = subprocess.check_output("dpkg --get-selections | grep timeshift | awk '{print $2}'",
-                                             shell=True).decode().strip()
-        if ts_install != 'install':
-            subprocess.call("sudo apt-get --yes --force-yes install timeshift", shell=True)
-    except subprocess.CalledProcessError as e:
-        subprocess.call("sudo apt-get --yes --force-yes install timeshift", shell=True)
 
     # search for the number of backup snapshots
     backup_list_len = int(str(subprocess.check_output("sudo timeshift --list | grep '>' | wc -l", shell=True).decode()))

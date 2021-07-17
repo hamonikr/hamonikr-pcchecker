@@ -6,14 +6,6 @@ import os
 import set
 import count
 
-# install gir1.2-appindicator3-0.1
-try:
-    gir_install = subprocess.check_output("dpkg --get-selections | grep gir1.2-appindicator3-0.1 | awk '{print $2}'", shell=True).decode().strip()
-    if gir_install != 'install':
-        subprocess.call("sudo apt-get --yes --force-yes install gir1.2-appindicator3-0.1", shell=True)
-except subprocess.CalledProcessError as e:
-    subprocess.call("sudo apt-get --yes --force-yes install gir1.2-appindicator3-0.1", shell=True)
-
 gi.require_version('Gtk', '3.0')
 gi.require_version('AppIndicator3', '0.1')
 from gi.repository import Gtk
@@ -220,15 +212,6 @@ class Application(Gtk.Window):
         row = Gtk.ListBoxRow()
         row.add(box_disk)
         stc_pc_info.add(row)
-
-        ## search graphic info and set gui ##
-        # install pciutils (necessary to search graphic info) if not installed
-        try:
-            pci_install = subprocess.check_output("dpkg --get-selections | grep pciutils | awk '{print $2}'", shell=True).decode().strip()
-            if pci_install != 'install' :
-                subprocess.call("sudo apt-get --yes --force-yes install pciutils", shell=True)
-        except subprocess.CalledProcessError as e:
-           subprocess.call("sudo apt-get --yes --force-yes install pciutils", shell=True)
 
         # graphic info
         graphic_val = self.fnt_command_return_word("lspci | grep -i VGA", 'controller: ', '\n')
