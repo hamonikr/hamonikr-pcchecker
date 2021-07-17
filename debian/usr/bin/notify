@@ -1,0 +1,18 @@
+# count the score and send notify if '위험'
+import count
+import subprocess
+
+# count the score
+(cnt,total_cnt) = count.count_score()
+total_score_val = round(cnt / total_cnt * 100)
+
+# send notify if score <=70
+if 70 >= total_score_val:
+    # set display to send notify
+    display = str(subprocess.check_output("ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1",shell=True).decode().strip())
+    # set user to send notify
+    user = str(subprocess.check_output("who | grep '" + display + "' | awk '{print $1}' | head -n 1",shell=True).decode().strip())
+    # set uid to send notify
+    uid = str(subprocess.check_output('id -u ' + user, shell=True).decode().strip())
+    # send notify
+    subprocess.call('sudo -u '+user+ ' DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/' + uid + '/bus notify-send "PC 지킴이" "보안 상태가 위험합니다."',shell=True),she

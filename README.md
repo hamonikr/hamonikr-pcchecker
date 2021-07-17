@@ -23,14 +23,12 @@ issues](https://img.shields.io/github/issues/2020-Invesum-Internship/hamonikr-pc
    위험)
  - 업데이트 상세 확인(보안 업데이트인 경우 기간에 상관없이 위험으로 표시되도록
    변경)
- - 설정 변경시 자동 갱신
- - 디자인 업데이트
 
 <hr>
 
 ## 설치 전 요구사항
 
-이 프로그램은 아래의 패키지를 사용하고 있으며 자신이 컴퓨터에 해당 패키지가 없으면 정상 작동되지 않습니다. (하모니카 3.0 은 기본 상태에서 구동.)
+이 프로그램은 아래의 패키지를 사용하고 있으며 자신이 컴퓨터에 해당 패키지가 없으면 자동 설치가 진행됩니다. (하모니카 3.0 은 기본 상태에서 구동.)
 
 * `python 3.6`
 * `gtk 3.0`
@@ -38,25 +36,29 @@ issues](https://img.shields.io/github/issues/2020-Invesum-Internship/hamonikr-pc
 * `timeshift`
 * `gufw`
 
-## 데비안 패키지 빌드
+## 패키지 설치
 
-다운로드 받은 디렉토리 안에서 아래와 같이 빌드하면 release 폴더 안에 설치 가능한 데비안 파일이 생성됩니다.
+다음과 같은 방법으로 PC 지킴이를 설치할 수 있습니다.
 
-```
-./build
-```
 
 ## HamoniKR PC Checker 설치
 
 ```
-sudo dpkg -i release/*.deb
+sudo add-apt-repository ppa:yeji980407/hamonikr-pcchecker
+sudo apt-get update
+sudo apt-get install hamonikr-pcchecker
+```
+### ppa 사용 불가한 환경일 경우 (Gooroom OS)
 
+다운로드 받은 디렉토리 안에서 아래와 같이 빌드하면 release 폴더 안에 설치 가능한 데비안 파일이 생성됩니다.
+```
+sh build
 ```
 
 ## HamoniKR PC Checker 삭제
 
 ```
-sudo apt remove --purge hamonikr-pcchecker
+sudo apt-get --purge remove hamonikr-pcchecker
 ```
 
 ## Using HamoniKR PC Checker
@@ -75,6 +77,7 @@ sudo apt remove --purge hamonikr-pcchecker
 3. 수정사항을 반영하고 커밋합니다 : `git commit -m '<commit_message>'`
 4. 저장소에 작업한 브랜치를 Push : `git push origin hamonikr-pcchecker/<location>`
 5. pull request 를 생성합니다.
+* [여기](https://github.com/2020-Ocarina/hamonikr-pcchecker_source-packaging)서 소스 패키지를 확인하실 수 있습니다.
 
 보다 자세한 내용은 GitHub documentation on [creating a pull
 request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) 를 참고하세요.
@@ -93,7 +96,8 @@ key](https://allcontributors.org/docs/en/emoji-key).
 
 ## Contact
 
-연락이 필요한 경우 <ryuish541@gmail.com> 또는 <yejisoft@gmail.com> 로 내용을 보내주세요.
+연락이 필요한 경우 <ryuish541@gmail.com> 또는 <yejisoft@gmail.com> 로 내용을 보내주세요.  
+프로젝트의 보다 자세한 사항과 모든 산출물을 [여기](http://team.hamonikr.org:18090/display/PC)서 확인하실 수 있습니다.
 
 ## License
 

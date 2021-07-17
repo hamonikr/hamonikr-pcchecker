@@ -1,0 +1,9 @@
+[Unit]
+Description=PcChecker timer
+
+[Timer]
+OnCalendar=*-*-* *:00:00
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target

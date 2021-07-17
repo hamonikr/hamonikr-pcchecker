@@ -1,0 +1,9 @@
+[Unit]
+Description=Service for pcchecker timer
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/pcchecker_alarm.sh
+
+[Install]
+WantedBy=multi-user.target

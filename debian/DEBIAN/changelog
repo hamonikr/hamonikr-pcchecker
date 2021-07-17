@@ -1,6 +1,0 @@
-hamonikr-pcchecker (1.0.1) stable; urgency=low
- * debian/DEBIAN/control:
-   - update version string
- * removed unused files
-
- -- Kevin Kim <root@hamonikr.org>  Fri, 28 Aug 2020 22:39:34 +0900
