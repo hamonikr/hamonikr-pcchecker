@@ -6,10 +6,6 @@ f01718e4e715aec948de5c9319537b2f  usr/share/icons/hicolor/256x256/apps/pcchecker
 5516f2579731a907a1660ee9ccbafaf6  usr/share/icons/hicolor/256x256/apps/pc_upgrade.png
 bd4befa9cf173cec77609d3a57b1217c  usr/share/applications/pcchecker.desktop
 b6e62a68cc85fa6adcfc80fa0e192367  usr/bin/pcchecker_asroot
-87ada172abc5058a8950bd13aae78e55  usr/bin/__pycache__/count.cpython-38.pyc
-5f31ae3894b0eedb0dff9c14c71aa867  usr/bin/__pycache__/set.cpython-38.pyc
-eeabacd47be1fd856b9d85cfcee0276a  usr/bin/__pycache__/count.cpython-36.pyc
-9f432ea4b5ee892b43c7a66008555644  usr/bin/__pycache__/set.cpython-36.pyc
 498ab2c4fcf07d46696360fbae0d293d  usr/bin/notify
 3d546f7d21743000a11f1249ef67e987  usr/bin/pcchecker
 dee2bd720f6b04edf38fe618d8cba35f  usr/bin/pcchecker_alarm.sh
